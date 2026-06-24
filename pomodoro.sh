@@ -8,7 +8,7 @@ SHORT=300    # 5 min
 LONG=900     # 15 min
 SIG=9        # waybar custom module signal offset (SIGRTMIN+9)
 
-COFFEE="<span font='Symbols Nerd Font 14'></span>"
+COFFEE="<span font='Symbols Nerd Font 14'></span>"
 BARLEY="<span font='Symbols Nerd Font 14'>󰁳</span>"
 
 _read() {

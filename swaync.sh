@@ -6,7 +6,7 @@ slash=$(printf '\xef\x87\xb6')     # U+F1F6 nf-fa-bell-slash
 if [ "$dnd" = "true" ]; then
     printf '{"text":"%s","class":"dnd"}\n' "$slash"
 elif [ "$count" -gt 0 ]; then
-    printf '{"text":"%s %s","class":"notification"}\n' "$bell" "$count"
+    printf '{"text":"%s","class":"notification"}\n' "$bell"
 else
     printf '{"text":"%s","class":"none"}\n' "$bell"
 fi
