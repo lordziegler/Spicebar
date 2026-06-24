@@ -1,0 +1,282 @@
+/* ── Gruvbox Hard Dark palette ─────────────────────────────────────── */
+@define-color bar-bg      rgba(14, 12, 8, 0.68);   /* frosted: compositor blurs behind this */
+@define-color main-bg     rgba(14, 12, 8, 0.0);    /* transparent sections */
+@define-color dark        #0E0C08;
+
+@define-color fg          #D4A843;   /* gruvbox fg              */
+@define-color accent-gold #FFD700;   /* gruvbox bright-yellow   */
+@define-color accent-dim  #C8960C;   /* muted gold (hover/idle) */
+@define-color muted       #a89984;   /* gruvbox fg4             */
+@define-color power-red   #fb4934;   /* gruvbox bright-red      */
+
+@define-color tool-bg     #282828;
+@define-color tool-color  #c5b18d;
+@define-color tool-border #383432;
+
+/* ponytail: kept old wb-* names so workspace rules don't need touching */
+@define-color wb-color    #a89984;
+@define-color wb-act-bg   #7c6f64;
+@define-color wb-act-color #504945;
+@define-color wb-hvr-bg   rgba(216, 166, 87, 0.12);
+@define-color wb-hvr-color @accent-dim;
+
+/* ── Reset ──────────────────────────────────────────────────────────── */
+* {
+	border: none;
+	border-radius: 0px;
+	font-family: "JetBrainsMonoNL Nerd Font Mono";
+	font-weight: bold;
+}
+
+/* ── Bar window ─────────────────────────────────────────────────────── */
+window#waybar {
+	background: @bar-bg;
+	border-radius: 0px;   /* straight edges — pixel-art aesthetic */
+	margin-top: 0px;
+	/* subtle golden lower rim */
+	border-bottom: 1px solid rgba(250, 189, 47, 0.18);
+}
+
+/* ── Section backgrounds ────────────────────────────────────────────── */
+.modules-left,
+.modules-right {
+	background: @main-bg;
+}
+
+.modules-right {
+	padding-left: 16px;
+}
+
+/* ── Tooltips ───────────────────────────────────────────────────────── */
+tooltip {
+	background: @tool-bg;
+	color: @tool-color;
+	border: 1px solid @tool-border;
+	border-radius: 10px;
+	padding: 12px 16px;
+}
+
+tooltip label {
+	color: @tool-color;
+}
+
+/* ── Workspaces ─────────────────────────────────────────────────────── */
+#workspaces {
+	padding-left: 16px;
+	padding-right: 16px;
+	background: @main-bg;
+	border-radius: 0px;
+}
+
+#workspaces button {
+	font-size: 20px;
+	box-shadow: none;
+	padding: 0px;
+	min-width: 32px;
+	color: @wb-color;
+	/* tight glow fakes a thicker stroke; outer layer adds depth */
+	text-shadow:
+		0 0 1px rgba(168, 153, 132, 0.9),
+		0 0 8px rgba(168, 153, 132, 0.18);
+	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+	opacity: 0.75;
+}
+
+#workspaces button.active {
+	color: @accent-gold;
+	text-shadow:
+		0 0 1px rgba(255, 215, 0, 1),
+		0 0 10px rgba(250, 189, 47, 0.7),
+		0 0 22px rgba(250, 189, 47, 0.3);
+	box-shadow: inset 0 -2px 0 0 @accent-gold;
+	opacity: 1;
+	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+#workspaces button:hover {
+	color: @wb-hvr-color;
+	background: @wb-hvr-bg;
+	border-radius: 6px;
+	opacity: 1;
+	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+/* ── Common module style ────────────────────────────────────────────── */
+#cpu,
+#battery,
+#memory,
+#clock,
+#window,
+#network,
+#bluetooth,
+#pulseaudio,
+#mpris,
+#tray,
+#custom-updates,
+#custom-power {
+	font-size: 16px;
+	color: @fg;
+	opacity: 0.88;
+	padding-left: 10px;
+	padding-right: 10px;
+	/* warm ambient glow — subtle, not distracting */
+	text-shadow: 0 0 6px rgba(212, 167, 74, 0.25);
+}
+
+/* ── Clock: slightly brighter, feels like the "anchor" ─────────────── */
+#clock {
+	color: #fdd700;
+	text-shadow: 0 0 10px rgba(253, 215, 0, 0.45);
+	font-size: 17px;
+}
+
+/* ── CPU bars color ─────────────────────────────────────────────────── */
+#cpu {
+	color: #fdd700;
+	text-shadow: 0 0 6px rgba(253, 215, 0, 0.3);
+}
+
+/* ── Battery states ─────────────────────────────────────────────────── */
+#battery.warning {
+	color: #fe8019;  /* gruvbox bright-orange */
+}
+
+#battery.critical {
+	color: @power-red;
+	animation: blink-critical 1s steps(1) infinite;
+}
+
+@keyframes blink-critical {
+	0%   { opacity: 1; }
+	50%  { opacity: 0.4; }
+	100% { opacity: 1; }
+}
+
+/* ── SwayNC notification indicator ─────────────────────────────────── */
+#custom-swaync {
+	font-size: 20px;
+	padding-left: 12px;
+	padding-right: 12px;
+	color: @fg;
+	opacity: 0.88;
+	text-shadow: 0 0 6px rgba(212, 167, 74, 0.25);
+}
+
+#custom-swaync.notification,
+#custom-swaync.inhibited-notification {
+	color: @accent-gold;
+	text-shadow: 0 0 10px rgba(250, 189, 47, 0.6);
+	opacity: 1;
+}
+
+#custom-swaync.none,
+#custom-swaync.inhibited-none {
+	color: @fg;
+	opacity: 0.7;
+}
+
+#custom-swaync.dnd-notification,
+#custom-swaync.dnd-none,
+#custom-swaync.dnd-inhibited-notification,
+#custom-swaync.dnd-inhibited-none {
+	color: @muted;
+	opacity: 0.45;
+}
+
+/* ── Network ────────────────────────────────────────────────────────── */
+#network.disconnected {
+	color: @muted;
+	opacity: 0.4;
+}
+
+/* ── Bluetooth ──────────────────────────────────────────────────────── */
+#bluetooth {
+	color: #83a598;  /* gruvbox bright-aqua */
+}
+
+#bluetooth.connected {
+	color: #8ec07c;  /* gruvbox bright-green */
+	text-shadow: 0 0 8px rgba(142, 192, 124, 0.4);
+}
+
+#bluetooth.disabled {
+	color: @muted;
+	opacity: 0.5;
+}
+
+/* ── Power button ───────────────────────────────────────────────────── */
+#custom-power {
+	color: @power-red;
+	font-size: 18px;
+	padding-right: 14px;
+	text-shadow: 0 0 8px rgba(251, 73, 52, 0.4);
+	opacity: 0.8;
+}
+
+#custom-power:hover {
+	opacity: 1;
+	text-shadow: 0 0 12px rgba(251, 73, 52, 0.7);
+}
+
+/* ── Mpris ──────────────────────────────────────────────────────────── */
+#mpris {
+	color: @fg;
+	padding-left: 12px;
+	padding-right: 4px;
+	font-size: 13px;
+}
+
+#mpris.paused {
+	color: @muted;
+	opacity: 0.65;
+}
+
+/* ── Window / taskbar ───────────────────────────────────────────────── */
+#window,
+#taskbar {
+	padding: 0px;
+}
+
+/* ── Pomodoro (idle = coat of arms, active = timer) ─────────────────── */
+#custom-pomodoro {
+	min-width: 36px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+#custom-pomodoro.idle {
+	background-image: url("/home/ziegler/.config/waybar/assets/ziegler.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#custom-pomodoro.work {
+	min-width: 80px;
+	color: #FFD700;
+	font-size: 14px;
+	text-shadow: 0 0 8px rgba(255, 215, 0, 0.45);
+}
+
+#custom-pomodoro.work-paused {
+	min-width: 80px;
+	color: #FFD700;
+	font-size: 14px;
+	opacity: 0.5;
+}
+
+#custom-pomodoro.break,
+#custom-pomodoro.longbreak {
+	min-width: 80px;
+	color: #8ec07c;
+	font-size: 14px;
+	text-shadow: 0 0 8px rgba(142, 192, 124, 0.4);
+}
+
+#custom-pomodoro.break-paused,
+#custom-pomodoro.longbreak-paused {
+	min-width: 80px;
+	color: #8ec07c;
+	font-size: 14px;
+	opacity: 0.5;
+}
