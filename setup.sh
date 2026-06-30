@@ -36,9 +36,16 @@ lnk "$REPO_DIR/assets"        "$WAYBAR_DIR/assets"
 lnk "$REPO_DIR/khal"          "$HOME/.config/khal"
 
 # ── 4. Generar style.css con $HOME real (no se puede usar ~ en url() CSS) ──
-echo "Generando style.css..."
-sed "s|__HOME__|$HOME|g" "$REPO_DIR/style.css" > "$WAYBAR_DIR/style.css"
-echo "  → $WAYBAR_DIR/style.css"
+# Solo si el repo NO es ya el directorio de waybar (evita autosobrescritura)
+if [[ "$(realpath "$REPO_DIR")" != "$(realpath "$WAYBAR_DIR" 2>/dev/null)" ]]; then
+    echo "Generando style.css..."
+    tmp=$(mktemp)
+    sed "s|__HOME__|$HOME|g" "$REPO_DIR/style.css" > "$tmp"
+    mv "$tmp" "$WAYBAR_DIR/style.css"
+    echo "  → $WAYBAR_DIR/style.css"
+else
+    echo "  (style.css: el repo es ~/.config/waybar/, no se regenera)"
+fi
 
 # ── 5. Calendario (opcional) ──────────────────────────────────────────
 if [[ "$CALENDAR" == true ]]; then
