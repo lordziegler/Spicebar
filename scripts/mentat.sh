@@ -2,9 +2,10 @@
 # Mentat — dual widget: música activa → canticulum / silencio → officium
 
 VAULT="$HOME/Documents/Cerebrum_Secundum"
-PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
-PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
+PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
+PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
 TASK_ICON="♁"
+VAULT_ICON="<span size='x-large'>♁</span>"
 
 STATUS=$(playerctl status 2>/dev/null || echo "Stopped")
 
@@ -20,7 +21,6 @@ if [[ "$STATUS" == "Playing" || "$STATUS" == "Paused" ]]; then
         ICON="$PAUS_ICON"; CLS="canticulum-pausa"
     fi
 
-    # Trunca solo el contenido visible — el span del icón queda intacto
     CONTENT=$(printf "%s — %s" "$ARTIST" "$TITLE" | cut -c1-38)
     [[ "${#CONTENT}" -ge 38 ]] && CONTENT="${CONTENT%?}…"
     printf '{"text":"%s  %s","class":"%s","tooltip":"%s · %s"}\n' \
@@ -28,13 +28,14 @@ if [[ "$STATUS" == "Playing" || "$STATUS" == "Paused" ]]; then
     exit 0
 fi
 
-# Silencio — busca en proyectos activos primero, luego áreas periódicas
+# Silencio — busca tareas en proyectos activos primero, luego áreas
 RAW=$(grep -r --include="*.md" -h "- \[ \]" \
     --exclude-dir=".obsidian" --exclude-dir="05-Formae" --exclude-dir="06-Archivum" \
     "$VAULT/01-Incepta" "$VAULT/02-Areae" 2>/dev/null | head -1)
 
 if [[ -z "$RAW" ]]; then
-    printf '{"text":"","class":"otium","tooltip":"Nulla officia · Pax Corrino"}\n'
+    printf '{"text":"%s","class":"otium","tooltip":"Cerebrum Secundum · Nulla officia"}\n' \
+        "$VAULT_ICON"
     exit 0
 fi
 
