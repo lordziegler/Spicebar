@@ -63,8 +63,8 @@
 		"escape":          false,
 		"tooltip":         true,
 		"on-click":        "~/.config/waybar/scripts/mentat-click.sh",
-		"on-click-right":  "playerctl next",
-		"on-click-middle": "playerctl previous",
+		"on-click-right":  "~/.config/waybar/scripts/mentat-next.sh",
+		"on-click-middle": "~/.config/waybar/scripts/mentat-prev.sh",
 		"on-scroll-up":    "playerctl next",
 		"on-scroll-down":  "playerctl previous"
 	},
