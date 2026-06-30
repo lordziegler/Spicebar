@@ -45,7 +45,8 @@ window#waybar {
 }
 
 .modules-right {
-	padding-left: 16px;
+	padding-left: 8px;
+	padding-right: 4px;
 }
 
 /* ── Tooltips ───────────────────────────────────────────────────────── */
@@ -120,17 +121,12 @@ tooltip label {
 		0 0 10px rgba(212, 167, 74, 0.40);
 }
 
-/* ── Group spacing — intentional gaps between logical clusters ───────── */
-/* connectivity cluster */
-#network    { margin-left: 10px; }
-/* audio/notifications cluster */
-#pulseaudio { margin-left: 10px; }
-/* battery — isolated between notifications and clock */
-#custom-battery { margin-left: 10px; padding-left: 6px; padding-right: 6px; }
-/* clock — anchor, gets extra room to breathe */
-#clock      { margin-left: 10px; padding-left: 14px; padding-right: 14px; }
-/* power — tight to the right edge */
-#custom-power { margin-left: 2px; }
+/* ── Group spacing — uniform 8px cluster gap ────────────────────────── */
+#network        { margin-left: 8px; }
+#pulseaudio     { margin-left: 8px; }
+#custom-battery { margin-left: 8px; }
+#clock          { margin-left: 8px; padding-left: 12px; padding-right: 12px; }
+#custom-power   { margin-left: 4px; padding-left: 10px; padding-right: 14px; }
 
 /* ── Clock: slightly brighter, feels like the "anchor" ─────────────── */
 #clock {
@@ -320,12 +316,14 @@ tooltip label {
 /* ── Pomodoro (idle = coat of arms, active = timer) ─────────────────── */
 #custom-pomodoro {
 	min-width: 36px;
-	padding-left: 4px;
-	padding-right: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
+	margin-left: 4px;
 }
 
 #custom-pomodoro.idle {
 	background-image: url("/home/ziegler/.config/waybar/assets/ziegler.png");
+	background-color: transparent;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;

@@ -2,8 +2,8 @@
 # Mentat — dual widget: música activa → canticulum / silencio → officium
 
 VAULT="$HOME/Documents/Cerebrum_Secundum"
-PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
-PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
+PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
+PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
 TASK_ICON="♁"
 VAULT_ICON="<span size='x-large'>♁</span>"
 
