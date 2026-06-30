@@ -8,13 +8,13 @@ WAYBAR_DIR="$HOME/.config/waybar"
 
 # ── 1. Check dependencies ──────────────────────────────────────────────
 need() { command -v "$1" &>/dev/null && return; echo "Missing: $1 — install with: sudo pacman -S $2" >&2; exit 1; }
-need waybar   waybar
-need kitty    kitty
+need waybar    waybar
+need kitty     kitty
 need systemctl systemd
 
 CALENDAR=true
-command -v khal        &>/dev/null || { echo "Warning: khal not found — calendar disabled (sudo pacman -S khal vdirsyncer)"; CALENDAR=false; }
-command -v vdirsyncer  &>/dev/null || CALENDAR=false
+command -v calcurse   &>/dev/null || { echo "Warning: calcurse not found — calendar disabled (sudo pacman -S calcurse vdirsyncer)"; CALENDAR=false; }
+command -v vdirsyncer &>/dev/null || CALENDAR=false
 
 # ── 2. Create destination ──────────────────────────────────────────────
 mkdir -p "$WAYBAR_DIR"
@@ -30,8 +30,8 @@ lnk() {
 
 if [[ "$(realpath "$REPO_DIR")" != "$(realpath "$WAYBAR_DIR" 2>/dev/null)" ]]; then
     echo "Linking waybar configs..."
-    lnk "$REPO_DIR/scripts"    "$WAYBAR_DIR/scripts"
-    lnk "$REPO_DIR/assets"     "$WAYBAR_DIR/assets"
+    lnk "$REPO_DIR/scripts"      "$WAYBAR_DIR/scripts"
+    lnk "$REPO_DIR/assets"       "$WAYBAR_DIR/assets"
     lnk "$REPO_DIR/config.jsonc" "$WAYBAR_DIR/config.jsonc"
     echo "Generating style.css..."
     tmp=$(mktemp)
@@ -42,11 +42,11 @@ else
     echo "  (repo is ~/.config/waybar/ — skipping symlinks and style.css regeneration)"
 fi
 
-# ── 5. Calendar (optional) ─────────────────────────────────────────────
+# ── 4. Calendar (optional) ─────────────────────────────────────────────
 if [[ "$CALENDAR" == true ]]; then
     SECRETS="$HOME/.config/vdirsyncer/secrets"
     VDIR_CFG="$HOME/.config/vdirsyncer/config"
-    KHAL_CFG="$HOME/.config/khal/config"
+    CAL_DATA="$HOME/.local/share/calcurse-outlook"
 
     # Collect calendar URLs if secrets file is missing or empty
     if [[ ! -s "$SECRETS" ]]; then
@@ -62,7 +62,6 @@ if [[ "$CALENDAR" == true ]]; then
             [[ -z "$CAL_NAME" ]] && break
             read -rp "  ICS URL for $CAL_NAME: " CAL_URL
             [[ -z "$CAL_URL" ]] && break
-            # Slugify: lowercase, spaces → underscores
             CAL_SLUG=$(printf '%s' "$CAL_NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
             printf '%s=%s\n' "$CAL_SLUG" "$CAL_URL" >> "$SECRETS"
             echo "  → saved $CAL_SLUG"
@@ -71,7 +70,7 @@ if [[ "$CALENDAR" == true ]]; then
         echo "  → $SECRETS"
     fi
 
-    # Generate vdirsyncer config from secrets (one pair per calendar)
+    # Generate vdirsyncer config (one pair per calendar)
     echo "Generating vdirsyncer config..."
     {
         echo "[general]"
@@ -80,51 +79,37 @@ if [[ "$CALENDAR" == true ]]; then
         while IFS='=' read -r name url; do
             [[ "$name" =~ ^[[:space:]]*#.*$ || -z "$name" ]] && continue
             mkdir -p "$HOME/.calendars/$name"
-            printf '[pair %s]\n' "$name"
-            printf 'a = "%s_remote"\n' "$name"
-            printf 'b = "%s_local"\n' "$name"
-            printf 'collections = null\n'
-            printf '\n'
+            printf '[pair %s]\n'           "$name"
+            printf 'a = "%s_remote"\n'     "$name"
+            printf 'b = "%s_local"\n'      "$name"
+            printf 'collections = null\n\n'
             printf '[storage %s_remote]\n' "$name"
             printf 'type = "http"\n'
-            printf 'url = "%s"\n' "$url"
-            printf '\n'
-            printf '[storage %s_local]\n' "$name"
+            printf 'url = "%s"\n\n'        "$url"
+            printf '[storage %s_local]\n'  "$name"
             printf 'type = "filesystem"\n'
             printf 'path = "%s/.calendars/%s/"\n' "$HOME" "$name"
-            printf 'fileext = ".ics"\n'
-            printf '\n'
+            printf 'fileext = ".ics"\n\n'
         done < "$SECRETS"
     } > "$VDIR_CFG"
     echo "  → $VDIR_CFG"
 
-    # Generate khal config with one [[calendar]] section per entry
-    echo "Generating khal config..."
-    {
-        echo "[calendars]"
-        while IFS='=' read -r name url; do
-            [[ "$name" =~ ^[[:space:]]*#.*$ || -z "$name" ]] && continue
-            printf '[[%s]]\n' "$name"
-            printf 'path = %s/.calendars/%s/\n' "$HOME" "$name"
-            printf 'color = yellow\n'
-            printf 'readonly = true\n'
-            printf '\n'
-        done < "$SECRETS"
-        echo "[sqlite]"
-        echo "path = $HOME/.local/share/khal/khal.db"
-        echo ""
-        echo "[locale]"
-        echo "timeformat = %H:%M"
-        echo "dateformat = %d/%m/%Y"
-        echo "datetimeformat = %d/%m/%Y %H:%M"
-        echo "firstweekday = 0"
-        echo ""
-        echo "[view]"
-        echo "theme = dark"
-    } > "$KHAL_CFG"
-    echo "  → $KHAL_CFG"
+    # Write calcurse config (dark theme, 24h, sane defaults)
+    mkdir -p "$CAL_DATA"
+    printf '%s\n' \
+        'appearance.calendarview=monthly' \
+        'appearance.layout=1' \
+        'appearance.theme=dark' \
+        'format.appointmentdesc=%m' \
+        'format.appointmentevent=|%m' \
+        'general.autosave=yes' \
+        'general.firstdayofweek=monday' \
+        'general.systemdialogs=yes' \
+        'notification.notifyall=yes' \
+        > "$CAL_DATA/conf"
+    echo "  → $CAL_DATA/conf"
 
-    mkdir -p "$HOME/.local/share/vdirsyncer/status" "$HOME/.local/share/khal"
+    mkdir -p "$HOME/.local/share/vdirsyncer/status"
 
     # Link systemd units
     echo "Linking calendar systemd units..."
@@ -137,11 +122,12 @@ if [[ "$CALENDAR" == true ]]; then
 
     echo "Discovering collections..."
     yes | vdirsyncer discover 2>&1 || true
-    echo "Syncing calendars..."
-    vdirsyncer sync && echo "  → sync complete" || echo "  → sync failed (re-run: vdirsyncer sync)"
+    echo "Syncing and importing calendars..."
+    vdirsyncer sync && "$REPO_DIR/scripts/calcurse-import.sh" && echo "  → sync complete" \
+        || echo "  → sync failed (re-run: vdirsyncer sync)"
 fi
 
-# ── 6. Manual step ────────────────────────────────────────────────────
+# ── 5. Manual step ────────────────────────────────────────────────────
 echo ""
 echo "────────────────────────────────────────────────────────────"
 echo "MANUAL STEP: Add this to ~/.config/niri/config.kdl"
