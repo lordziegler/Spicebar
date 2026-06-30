@@ -65,27 +65,48 @@ Icons use layered `text-shadow` to simulate stroke weight — the symbols are in
 | PulseAudio | Volume icon; `pavucontrol` on click |
 | SwayNC | Notification count + DND toggle |
 | Battery | Icon-only with warning/critical blink |
-| Clock | `HH:MM`; alt-click for full date |
+| Clock | `HH:MM`; left-click for full date; **right-click opens calendar** |
 | Power | `wlogout` layer-shell |
 
 ### MPRIS
 
 Media module on the left. Shows artist — title with play/pause/next/prev on scroll and click.
 
+### Calendar — Outlook.com via khal
+
+Right-click the clock to open `khal interactive` in a floating Kitty terminal. Events are synced from Outlook.com every 30 minutes via a systemd user timer — no persistent daemon.
+
+Colors inherit from Kitty's Gruvbox Hard Dark theme. No palette is hardcoded.
+
 ---
 
 ## Installation
 
 ```bash
-# 1. Copy the directory
-cp -r waybar ~/.config/
+# 1. Run the bootstrap script (handles symlinks, systemd timer, and initial sync)
+bash setup.sh
+```
 
-# 2. Make scripts executable
-chmod +x ~/.config/waybar/pomodoro.sh
-chmod +x ~/.config/waybar/swaync.sh
+`setup.sh` will:
+- Verify that `khal` and `vdirsyncer` are installed (`sudo pacman -S khal vdirsyncer`)
+- Prompt for your Outlook.com iCal URL on first run and save it to `~/.config/vdirsyncer/secrets` (mode 600, never committed)
+- Symlink all configs to their target locations under `~/.config/`
+- Enable and start the `vdirsyncer.timer` systemd user unit
+- Run the initial calendar sync
 
-# 3. Launch
-waybar
+**Getting your Outlook.com iCal URL:**
+1. Go to [outlook.live.com](https://outlook.live.com) → ⚙️ Settings → View all Outlook settings
+2. Calendar → Shared calendars → Publish a calendar
+3. Select your calendar → Publish → copy the **ICS** link
+
+**Niri floating window rule** — add to `~/.config/niri/rules.kdl` (or equivalent):
+```kdl
+window-rule {
+    match app-id="khal-float"
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 550; }
+}
 ```
 
 ---
@@ -103,6 +124,9 @@ waybar
 | `pavucontrol` | PulseAudio volume GUI |
 | `wlogout` | Power menu |
 | `notify-send` | Pomodoro phase notifications |
+| `khal` | TUI calendar (calendar feature) |
+| `vdirsyncer` | iCal sync from Outlook.com (calendar feature) |
+| `kitty` | Terminal for calendar floating window |
 | JetBrains Mono Nerd Font | Primary font |
 | Symbols Nerd Font | Icon glyphs (wifi, battery, bluetooth…) |
 
