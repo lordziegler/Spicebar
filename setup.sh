@@ -40,11 +40,12 @@ lnk "$REPO_DIR/khal"          "$HOME/.config/khal"
 if [[ "$(realpath "$REPO_DIR")" != "$(realpath "$WAYBAR_DIR" 2>/dev/null)" ]]; then
     echo "Generando style.css..."
     tmp=$(mktemp)
-    sed "s|__HOME__|$HOME|g" "$REPO_DIR/style.css" > "$tmp"
+    # Reemplaza cualquier /home/<usuario>/ con el $HOME real del nuevo usuario
+    sed "s|/home/[^/]*/|$HOME/|g" "$REPO_DIR/style.css" > "$tmp"
     mv "$tmp" "$WAYBAR_DIR/style.css"
     echo "  → $WAYBAR_DIR/style.css"
 else
-    echo "  (style.css: el repo es ~/.config/waybar/, no se regenera)"
+    echo "  (style.css: el repo es ~/.config/waybar/, sin regenerar)"
 fi
 
 # ── 5. Calendario (opcional) ──────────────────────────────────────────
