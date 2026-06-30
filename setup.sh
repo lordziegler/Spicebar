@@ -94,18 +94,15 @@ if [[ "$CALENDAR" == true ]]; then
     } > "$VDIR_CFG"
     echo "  → $VDIR_CFG"
 
-    # Write calcurse config (only valid keys — colors handled via kitty overrides)
+    # Write calcurse config (only confirmed-valid keys; colors via kitty overrides)
     mkdir -p "$CAL_DATA"
     printf '%s\n' \
-        'appearance.calendarview=0' \
+        'general.autosave=yes' \
+        'general.confirmquit=no' \
+        'general.firstdayofweek=monday' \
+        'general.systemdialogs=no' \
         'appearance.layout=1' \
         'appearance.notifybar=yes' \
-        'format.appointmentdesc=%m' \
-        'format.appointmentevent=|%m' \
-        'general.autosave=yes' \
-        'general.firstdayofweek=monday' \
-        'general.systemdialogs=yes' \
-        'notification.notifyall=yes' \
         > "$CAL_DATA/conf"
     echo "  → $CAL_DATA/conf"
 
