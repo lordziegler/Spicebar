@@ -14,7 +14,7 @@
 @define-color tool-border #383432;
 
 /* ponytail: kept old wb-* names so workspace rules don't need touching */
-@define-color solar-flare  #fe8019;   /* gruvbox bright-orange · sol de Arrakis */
+@define-color solar-flare  #F0B030;   /* amber solar · sol de Arrakis */
 @define-color wb-color    #a89984;
 @define-color wb-act-bg   #7c6f64;
 @define-color wb-act-color #504945;
@@ -76,9 +76,9 @@ tooltip label {
 	min-width: 32px;
 	color: @solar-flare;
 	text-shadow:
-		0 0 2px rgba(254, 128, 25, 0.9),
-		0 0 10px rgba(254, 128, 25, 0.45),
-		0 0 22px rgba(254, 128, 25, 0.18);
+		0 0 2px rgba(240, 176, 48, 0.9),
+		0 0 10px rgba(240, 176, 48, 0.45),
+		0 0 22px rgba(240, 176, 48, 0.18);
 	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
 	opacity: 0.72;
 }
@@ -264,13 +264,19 @@ tooltip label {
 	color: @power-red;
 	font-size: 18px;
 	padding-right: 14px;
-	text-shadow: 0 0 8px rgba(251, 73, 52, 0.4);
+	text-shadow:
+		0 0 3px rgba(251, 73, 52, 0.95),
+		0 0 12px rgba(251, 73, 52, 0.55),
+		0 0 24px rgba(251, 73, 52, 0.22);
 	opacity: 0.8;
 }
 
 #custom-power:hover {
 	opacity: 1;
-	text-shadow: 0 0 12px rgba(251, 73, 52, 0.7);
+	text-shadow:
+		0 0 4px rgba(251, 73, 52, 1),
+		0 0 16px rgba(251, 73, 52, 0.75),
+		0 0 32px rgba(251, 73, 52, 0.35);
 }
 
 /* ── Mentat — canticulum / officium ────────────────────────────────── */
@@ -306,9 +312,9 @@ tooltip label {
 	color: @solar-flare;
 	opacity: 0.72;
 	text-shadow:
-		0 0 2px rgba(254, 128, 25, 0.9),
-		0 0 10px rgba(254, 128, 25, 0.45),
-		0 0 22px rgba(254, 128, 25, 0.18);
+		0 0 2px rgba(240, 176, 48, 0.9),
+		0 0 10px rgba(240, 176, 48, 0.45),
+		0 0 22px rgba(240, 176, 48, 0.18);
 }
 
 /* ── Pomodoro (idle = coat of arms, active = timer) ─────────────────── */
