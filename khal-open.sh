@@ -3,7 +3,12 @@
 # Si khal no está instalado o no hay calendarios sincronizados, notifica.
 
 if ! command -v khal &>/dev/null; then
-    notify-send -u critical "Calendar" "khal no encontrado — ejecuta setup.sh primero"
+    notify-send -u critical "Calendar" "khal no encontrado — ejecuta: sudo pacman -S khal"
+    exit 1
+fi
+
+if [[ ! -f "$HOME/.config/khal/config" ]]; then
+    notify-send -u critical "Calendar" "Config de khal no encontrada — ejecuta setup.sh"
     exit 1
 fi
 
