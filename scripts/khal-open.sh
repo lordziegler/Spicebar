@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
-# Opens khal interactive in a floating Kitty window.
-# Notifies if khal is not installed or no calendars are synced yet.
+# Opens calcurse in a floating Kitty window using the synced Outlook calendars.
 
-if ! command -v khal &>/dev/null; then
-    notify-send -u critical "Calendar" "khal not found — install with: sudo pacman -S khal"
+DATA_DIR="$HOME/.local/share/calcurse-outlook"
+
+if ! command -v calcurse &>/dev/null; then
+    notify-send -u critical "Calendar" "calcurse not found — install with: sudo pacman -S calcurse"
     exit 1
 fi
 
-if [[ ! -f "$HOME/.config/khal/config" ]]; then
-    notify-send -u critical "Calendar" "khal config not found — run setup.sh"
-    exit 1
+if [[ ! -d "$DATA_DIR" || ! -f "$DATA_DIR/apts" ]]; then
+    notify-send -u normal "Calendar" "No events yet — run setup.sh to sync"
 fi
 
-if [[ ! -d "$HOME/.calendars/outlook" || -z "$(ls -A "$HOME/.calendars/outlook" 2>/dev/null)" ]]; then
-    notify-send -u normal "Calendar" "No events — run setup.sh to sync Outlook"
-fi
-
-exec kitty --app-id khal-float --title "Calendar" khal interactive
+exec kitty --app-id khal-float --title "Calendar" calcurse -D "$DATA_DIR"
