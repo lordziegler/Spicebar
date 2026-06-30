@@ -28,20 +28,18 @@ lnk() {
     echo "  → $dst"
 }
 
-echo "Linking waybar configs..."
-lnk "$REPO_DIR/scripts" "$WAYBAR_DIR/scripts"
-lnk "$REPO_DIR/assets"  "$WAYBAR_DIR/assets"
-
-# ── 4. Generate style.css (only if repo ≠ waybar dir) ─────────────────
 if [[ "$(realpath "$REPO_DIR")" != "$(realpath "$WAYBAR_DIR" 2>/dev/null)" ]]; then
+    echo "Linking waybar configs..."
+    lnk "$REPO_DIR/scripts"    "$WAYBAR_DIR/scripts"
+    lnk "$REPO_DIR/assets"     "$WAYBAR_DIR/assets"
+    lnk "$REPO_DIR/config.jsonc" "$WAYBAR_DIR/config.jsonc"
     echo "Generating style.css..."
     tmp=$(mktemp)
     sed "s|/home/[^/]*/|$HOME/|g" "$REPO_DIR/style.css" > "$tmp"
     mv "$tmp" "$WAYBAR_DIR/style.css"
     echo "  → $WAYBAR_DIR/style.css"
-    lnk "$REPO_DIR/config.jsonc" "$WAYBAR_DIR/config.jsonc"
 else
-    echo "  (style.css: repo is ~/.config/waybar/ — skipping regeneration)"
+    echo "  (repo is ~/.config/waybar/ — skipping symlinks and style.css regeneration)"
 fi
 
 # ── 5. Calendar (optional) ─────────────────────────────────────────────
