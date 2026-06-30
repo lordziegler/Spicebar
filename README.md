@@ -11,11 +11,11 @@ The bar is minimal by design. Everything earns its place on the screen.
 
 #### Showcase
 
-![Waybar with Coat of Arms](<Screenshot 2026-06-23 20-25-05.png>)
+![Waybar with Coat of Arms](assets/screenshots/idle.png)
 
-![Waybar with Active Pomodoro Timer](<Screenshot 2026-06-23 20-11-53.png>)
+![Waybar with Active Pomodoro Timer](assets/screenshots/pomodoro-work.png)
 
-![Waybar with Active Rest Pomodoro Timer](<Screenshot 2026-06-23 20-24-47.png>)
+![Waybar with Active Rest Pomodoro Timer](assets/screenshots/pomodoro-break.png)
 ---
 ## Features
 

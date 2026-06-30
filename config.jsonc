@@ -27,35 +27,35 @@
 
 	// ── Memory bars ───────────────────────────────────────────────────
 	"custom/memory": {
-		"exec":        "~/.config/waybar/memory.sh",
+		"exec":        "~/.config/waybar/scripts/memory.sh",
 		"return-type": "json",
 		"interval":    5,
 		"signal":      12,
 		"tooltip":     true,
-		"on-click":    "~/.config/waybar/memory.sh toggle"
+		"on-click":    "~/.config/waybar/scripts/memory.sh toggle"
 	},
 
 	// ── CPU temperature ───────────────────────────────────────────────
 	"custom/temp": {
-		"exec":        "~/.config/waybar/temp.sh",
+		"exec":        "~/.config/waybar/scripts/temp.sh",
 		"return-type": "json",
 		"interval":    5,
 		"signal":      11,
 		"escape":      false,
 		"tooltip":     true,
-		"on-click":    "~/.config/waybar/temp.sh toggle"
+		"on-click":    "~/.config/waybar/scripts/temp.sh toggle"
 	},
 
 	// ── Pomodoro ──────────────────────────────────────────────────────
 	"custom/pomodoro": {
-		"exec":        "~/.config/waybar/pomodoro.sh status",
+		"exec":        "~/.config/waybar/scripts/pomodoro.sh status",
 		"return-type": "json",
 		"interval":    1,
 		"signal":      9,
 		"escape":      false,
-		"on-click":        "~/.config/waybar/pomodoro.sh toggle",
-		"on-click-right":  "~/.config/waybar/pomodoro.sh reset",
-		"on-click-middle": "~/.config/waybar/pomodoro.sh skip"
+		"on-click":        "~/.config/waybar/scripts/pomodoro.sh toggle",
+		"on-click-right":  "~/.config/waybar/scripts/pomodoro.sh reset",
+		"on-click-middle": "~/.config/waybar/scripts/pomodoro.sh skip"
 	},
 
 	// ── Mpris ─────────────────────────────────────────────────────────
@@ -98,7 +98,7 @@
 	"custom/swaync": {
 		"format": "<span font='Symbols Nerd Font 18'>{text}</span>",
 		"exec-if": "which swaync-client",
-		"exec":    "~/.config/waybar/swaync.sh",
+		"exec":    "~/.config/waybar/scripts/swaync.sh",
 		"return-type": "json",
 		"interval": 5,
 		"escape": false,
@@ -154,19 +154,19 @@
 
 	// ── Battery ────────────────────────────────────────────────────────
 	"custom/battery": {
-		"exec":        "~/.config/waybar/battery.sh",
+		"exec":        "~/.config/waybar/scripts/battery.sh",
 		"return-type": "json",
 		"interval":    30,
 		"signal":      10,
 		"escape":      false,
-		"on-click":    "~/.config/waybar/battery.sh toggle"
+		"on-click":    "~/.config/waybar/scripts/battery.sh toggle"
 	},
 	// ── Clock ─────────────────────────────────────────────────────────
 	"clock": {
 		"format":          "{:%H:%M}",
 		"format-alt":      "{:%H:%M  %a %d %b %Y}",
 		"tooltip-format":  "<tt><small>{calendar}</small></tt>",
-		"on-click-right":  "~/.config/waybar/khal-open.sh"
+		"on-click-right":  "~/.config/waybar/scripts/khal-open.sh"
 	},
 
 
