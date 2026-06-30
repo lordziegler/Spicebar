@@ -50,6 +50,7 @@ link_config "$REPO_DIR/khal/config"                "$HOME/.config/khal/config"
 link_config "$REPO_DIR/vdirsyncer/config"          "$HOME/.config/vdirsyncer/config"
 link_config "$REPO_DIR/systemd/vdirsyncer.service" "$HOME/.config/systemd/user/vdirsyncer.service"
 link_config "$REPO_DIR/systemd/vdirsyncer.timer"   "$HOME/.config/systemd/user/vdirsyncer.timer"
+link_config "$REPO_DIR/khal-open.sh"               "$HOME/.config/waybar/khal-open.sh"
 
 # ── 5. Activar timer ──────────────────────────────────────────────────
 systemctl --user daemon-reload
