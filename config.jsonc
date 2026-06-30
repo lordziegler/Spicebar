@@ -105,7 +105,7 @@
 		"format-disconnected": "<span font='Symbols Nerd Font 16'></span>",
 		"tooltip-format-wifi": "{essid}  {signalStrength}%",
 		"tooltip-format-ethernet": "{ifname} · {ipaddr}",
-		"tooltip-format-disconnected": "Sin conexión",
+		"tooltip-format-disconnected": "No connection",
 		"interface": "wlan0",
 		"on-click": "nm-connection-editor"
 	},
