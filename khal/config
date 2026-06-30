@@ -1,7 +1,7 @@
 [calendars]
 [[outlook]]
 path = ~/.calendars/outlook/
-color = bright yellow
+color = yellow
 
 [sqlite]
 path = ~/.local/share/khal/khal.db
