@@ -94,20 +94,12 @@ if [[ "$CALENDAR" == true ]]; then
     } > "$VDIR_CFG"
     echo "  → $VDIR_CFG"
 
-    # Write calcurse config (Imperator gold theme)
+    # Write calcurse config (only valid keys — colors handled via kitty overrides)
     mkdir -p "$CAL_DATA"
     printf '%s\n' \
-        'appearance.calendarview=monthly' \
+        'appearance.calendarview=0' \
         'appearance.layout=1' \
-        'appearance.theme=custom' \
-        'color.1=yellow:default' \
-        'color.2=yellow:default' \
-        'color.3=yellow:default' \
-        'color.4=black:yellow' \
-        'color.5=white:default' \
-        'color.6=yellow:default' \
-        'color.7=yellow:default' \
-        'color.8=white:default' \
+        'appearance.notifybar=yes' \
         'format.appointmentdesc=%m' \
         'format.appointmentevent=|%m' \
         'general.autosave=yes' \
