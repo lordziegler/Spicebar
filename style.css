@@ -14,7 +14,7 @@
 @define-color tool-border #383432;
 
 /* ponytail: kept old wb-* names so workspace rules don't need touching */
-@define-color wb-color    #D4A843;
+@define-color wb-color    #a89984;
 @define-color wb-act-bg   #7c6f64;
 @define-color wb-act-color #504945;
 @define-color wb-hvr-bg   rgba(216, 166, 87, 0.12);
@@ -69,17 +69,17 @@ tooltip label {
 }
 
 #workspaces button {
-	font-size: 23px;
+	font-size: 20px;
 	box-shadow: none;
 	padding: 0px;
-	min-width: 34px;
+	min-width: 32px;
 	color: @wb-color;
+	/* tight glow fakes a thicker stroke; outer layer adds depth */
 	text-shadow:
-		0 0 2px rgba(212, 168, 67, 1),
-		0 0 10px rgba(212, 168, 67, 0.65),
-		0 0 24px rgba(212, 168, 67, 0.28);
+		0 0 1px rgba(168, 153, 132, 0.9),
+		0 0 8px rgba(168, 153, 132, 0.18);
 	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
-	opacity: 0.88;
+	opacity: 0.75;
 }
 
 #workspaces button.active {
@@ -113,15 +113,22 @@ tooltip label {
 	font-size: 16px;
 	color: @fg;
 	opacity: 0.88;
-	padding-left: 9px;
-	padding-right: 9px;
+	padding-left: 8px;
+	padding-right: 8px;
 	text-shadow: 0 0 6px rgba(212, 167, 74, 0.25);
 }
 
-/* ── Spacing — gap externo uniforme: 9 + 8 + 9 = 26px ─────────────── */
-#network      { margin-left: 8px; }
-#clock        { margin-left: 8px; }
-#custom-power { margin-left: 8px; }
+/* ── Group spacing — intentional gaps between logical clusters ───────── */
+/* connectivity cluster */
+#network    { margin-left: 10px; }
+/* audio/notifications cluster */
+#pulseaudio { margin-left: 10px; }
+/* battery — isolated between notifications and clock */
+#custom-battery { margin-left: 10px; padding-left: 6px; padding-right: 6px; }
+/* clock — anchor, gets extra room to breathe */
+#clock      { margin-left: 10px; padding-left: 14px; padding-right: 14px; }
+/* power — tight to the right edge */
+#custom-power { margin-left: 2px; }
 
 /* ── Clock: slightly brighter, feels like the "anchor" ─────────────── */
 #clock {
@@ -135,7 +142,6 @@ tooltip label {
 #custom-memory {
 	color: #fdd700;
 	text-shadow: 0 0 6px rgba(253, 215, 0, 0.3);
-	letter-spacing: 2px;
 }
 
 #custom-memory {
@@ -168,21 +174,11 @@ tooltip label {
 /* ── Battery states ─────────────────────────────────────────────────── */
 #custom-battery.warning {
 	color: #fe8019;
-	background: transparent;
 }
 
 #custom-battery.critical {
 	color: @power-red;
-	background: transparent;
 	animation: blink-critical 1s steps(1) infinite;
-}
-
-#custom-battery.normal {
-	background: transparent;
-}
-
-#custom-battery.charging {
-	background: transparent;
 }
 
 #custom-battery.charging {
@@ -199,8 +195,8 @@ tooltip label {
 /* ── SwayNC notification indicator ─────────────────────────────────── */
 #custom-swaync {
 	font-size: 18px;
-	padding-left: 9px;
-	padding-right: 9px;
+	padding-left: 8px;
+	padding-right: 8px;
 	color: @fg;
 	opacity: 0.88;
 	text-shadow: 0 0 6px rgba(212, 167, 74, 0.25);
@@ -257,13 +253,15 @@ tooltip label {
 /* ── Power button ───────────────────────────────────────────────────── */
 #custom-power {
 	color: @power-red;
-	text-shadow: 0 0 10px rgba(251, 73, 52, 0.55);
-	opacity: 0.85;
+	font-size: 18px;
+	padding-right: 14px;
+	text-shadow: 0 0 8px rgba(251, 73, 52, 0.4);
+	opacity: 0.8;
 }
 
 #custom-power:hover {
 	opacity: 1;
-	text-shadow: 0 0 14px rgba(251, 73, 52, 0.85);
+	text-shadow: 0 0 12px rgba(251, 73, 52, 0.7);
 }
 
 /* ── Mpris ──────────────────────────────────────────────────────────── */
@@ -287,7 +285,7 @@ tooltip label {
 }
 
 #custom-pomodoro.idle {
-	background-image: url("__HOME__/.config/waybar/assets/ziegler.png");
+	background-image: url("/home/ziegler/.config/waybar/assets/ziegler.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
