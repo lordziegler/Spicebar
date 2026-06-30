@@ -1,93 +1,151 @@
 #!/usr/bin/env bash
-# Bootstrap de Spicebar — enlaza configs, genera style.css y activa el sync de calendario.
-# Uso: bash setup.sh
+# Spicebar setup — links configs, generates style.css, and sets up calendar sync.
+# Usage: bash setup.sh
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WAYBAR_DIR="$HOME/.config/waybar"
 
-# ── 1. Verificar dependencias ─────────────────────────────────────────
-need() { command -v "$1" &>/dev/null && return; echo "Falta: $1 — instalar con: sudo pacman -S $2" >&2; exit 1; }
-need waybar  waybar
-need kitty   kitty
+# ── 1. Check dependencies ──────────────────────────────────────────────
+need() { command -v "$1" &>/dev/null && return; echo "Missing: $1 — install with: sudo pacman -S $2" >&2; exit 1; }
+need waybar   waybar
+need kitty    kitty
 need systemctl systemd
 
-# Opcionales — solo necesarios para el calendario
 CALENDAR=true
-command -v khal        &>/dev/null || { echo "Aviso: khal no instalado — calendario desactivado (sudo pacman -S khal vdirsyncer)"; CALENDAR=false; }
+command -v khal        &>/dev/null || { echo "Warning: khal not found — calendar disabled (sudo pacman -S khal vdirsyncer)"; CALENDAR=false; }
 command -v vdirsyncer  &>/dev/null || CALENDAR=false
 
-# ── 2. Crear destino ──────────────────────────────────────────────────
+# ── 2. Create destination ──────────────────────────────────────────────
 mkdir -p "$WAYBAR_DIR"
 
-# ── 3. Función de enlace (hace backup si existe un archivo real) ───────
+# ── 3. Link helper (backs up real files, then symlinks) ────────────────
 lnk() {
     local src="$1" dst="$2"
     mkdir -p "$(dirname "$dst")"
-    [[ -e "$dst" && ! -L "$dst" ]] && mv "$dst" "${dst}.bak" && echo "Backup: ${dst}.bak"
+    [[ -e "$dst" && ! -L "$dst" ]] && mv "$dst" "${dst}.bak" && echo "  Backup: ${dst}.bak"
     ln -sf "$src" "$dst"
     echo "  → $dst"
 }
 
-echo "Enlazando configs de waybar..."
-lnk "$REPO_DIR/config.jsonc"  "$WAYBAR_DIR/config.jsonc"
-lnk "$REPO_DIR/scripts"       "$WAYBAR_DIR/scripts"
-lnk "$REPO_DIR/assets"        "$WAYBAR_DIR/assets"
-lnk "$REPO_DIR/khal"          "$HOME/.config/khal"
+echo "Linking waybar configs..."
+lnk "$REPO_DIR/scripts" "$WAYBAR_DIR/scripts"
+lnk "$REPO_DIR/assets"  "$WAYBAR_DIR/assets"
 
-# ── 4. Generar style.css con $HOME real (no se puede usar ~ en url() CSS) ──
-# Solo si el repo NO es ya el directorio de waybar (evita autosobrescritura)
+# ── 4. Generate style.css (only if repo ≠ waybar dir) ─────────────────
 if [[ "$(realpath "$REPO_DIR")" != "$(realpath "$WAYBAR_DIR" 2>/dev/null)" ]]; then
-    echo "Generando style.css..."
+    echo "Generating style.css..."
     tmp=$(mktemp)
-    # Reemplaza cualquier /home/<usuario>/ con el $HOME real del nuevo usuario
     sed "s|/home/[^/]*/|$HOME/|g" "$REPO_DIR/style.css" > "$tmp"
     mv "$tmp" "$WAYBAR_DIR/style.css"
     echo "  → $WAYBAR_DIR/style.css"
+    lnk "$REPO_DIR/config.jsonc" "$WAYBAR_DIR/config.jsonc"
 else
-    echo "  (style.css: el repo es ~/.config/waybar/, sin regenerar)"
+    echo "  (style.css: repo is ~/.config/waybar/ — skipping regeneration)"
 fi
 
-# ── 5. Calendario (opcional) ──────────────────────────────────────────
+# ── 5. Calendar (optional) ─────────────────────────────────────────────
 if [[ "$CALENDAR" == true ]]; then
     SECRETS="$HOME/.config/vdirsyncer/secrets"
+    VDIR_CFG="$HOME/.config/vdirsyncer/config"
+    KHAL_CFG="$HOME/.config/khal/config"
 
-    if [[ ! -f "$SECRETS" ]]; then
+    # Collect calendar URLs if secrets file is missing or empty
+    if [[ ! -s "$SECRETS" ]]; then
         mkdir -p "$(dirname "$SECRETS")"
         echo ""
-        echo "Introduce tu URL iCal de Outlook.com:"
-        echo "(outlook.live.com → Configuración → Calendario → Calendarios"
-        echo " compartidos → Publicar un calendario → Obtener enlace ICS)"
+        echo "Enter your Outlook.com ICS calendar URLs."
+        echo "(outlook.live.com → Settings → Calendar → Shared calendars → Publish → ICS link)"
+        echo "Enter a name and URL for each calendar. Leave the name blank to finish."
         echo ""
-        read -rp "URL: " ICAL_URL
-        printf 'OUTLOOK_ICAL_URL=%s\n' "$ICAL_URL" > "$SECRETS"
+        > "$SECRETS"
+        while true; do
+            read -rp "  Calendar name (e.g. personal, work — blank to finish): " CAL_NAME
+            [[ -z "$CAL_NAME" ]] && break
+            read -rp "  ICS URL for $CAL_NAME: " CAL_URL
+            [[ -z "$CAL_URL" ]] && break
+            # Slugify: lowercase, spaces → underscores
+            CAL_SLUG=$(printf '%s' "$CAL_NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
+            printf '%s=%s\n' "$CAL_SLUG" "$CAL_URL" >> "$SECRETS"
+            echo "  → saved $CAL_SLUG"
+        done
         chmod 600 "$SECRETS"
         echo "  → $SECRETS"
     fi
 
-    mkdir -p "$HOME/.calendars/outlook" "$HOME/.local/share/vdirsyncer/status" "$HOME/.local/share/khal"
+    # Generate vdirsyncer config from secrets (one pair per calendar)
+    echo "Generating vdirsyncer config..."
+    {
+        echo "[general]"
+        echo "status_path = \"$HOME/.local/share/vdirsyncer/status/\""
+        echo ""
+        while IFS='=' read -r name url; do
+            [[ "$name" =~ ^[[:space:]]*#.*$ || -z "$name" ]] && continue
+            mkdir -p "$HOME/.calendars/$name"
+            printf '[pair %s]\n' "$name"
+            printf 'a = "%s_remote"\n' "$name"
+            printf 'b = "%s_local"\n' "$name"
+            printf 'collections = null\n'
+            printf '\n'
+            printf '[storage %s_remote]\n' "$name"
+            printf 'type = "http"\n'
+            printf 'url = "%s"\n' "$url"
+            printf '\n'
+            printf '[storage %s_local]\n' "$name"
+            printf 'type = "filesystem"\n'
+            printf 'path = "%s/.calendars/%s/"\n' "$HOME" "$name"
+            printf 'fileext = ".ics"\n'
+            printf '\n'
+        done < "$SECRETS"
+    } > "$VDIR_CFG"
+    echo "  → $VDIR_CFG"
 
-    echo "Enlazando configs de calendario..."
-    lnk "$REPO_DIR/vdirsyncer/config"          "$HOME/.config/vdirsyncer/config"
+    # Generate khal config with one [[calendar]] section per entry
+    echo "Generating khal config..."
+    {
+        echo "[calendars]"
+        while IFS='=' read -r name url; do
+            [[ "$name" =~ ^[[:space:]]*#.*$ || -z "$name" ]] && continue
+            printf '[[%s]]\n' "$name"
+            printf 'path = %s/.calendars/%s/\n' "$HOME" "$name"
+            printf 'color = yellow\n'
+            printf 'readonly = true\n'
+            printf '\n'
+        done < "$SECRETS"
+        echo "[sqlite]"
+        echo "path = $HOME/.local/share/khal/khal.db"
+        echo ""
+        echo "[locale]"
+        echo "timeformat = %H:%M"
+        echo "dateformat = %d/%m/%Y"
+        echo "datetimeformat = %d/%m/%Y %H:%M"
+        echo "firstweekday = 0"
+        echo ""
+        echo "[view]"
+        echo "theme = dark"
+    } > "$KHAL_CFG"
+    echo "  → $KHAL_CFG"
+
+    mkdir -p "$HOME/.local/share/vdirsyncer/status" "$HOME/.local/share/khal"
+
+    # Link systemd units
+    echo "Linking calendar systemd units..."
     lnk "$REPO_DIR/systemd/vdirsyncer.service" "$HOME/.config/systemd/user/vdirsyncer.service"
     lnk "$REPO_DIR/systemd/vdirsyncer.timer"   "$HOME/.config/systemd/user/vdirsyncer.timer"
 
     systemctl --user daemon-reload
     systemctl --user enable --now vdirsyncer.timer
-    echo "  → timer activo"
+    echo "  → timer active"
 
-    # shellcheck source=/dev/null
-    source "$SECRETS"; export OUTLOOK_ICAL_URL
-    echo "Sincronizando calendario..."
-    vdirsyncer discover --yes && vdirsyncer sync
-    echo "  → sync completado"
+    echo "Syncing calendars..."
+    vdirsyncer sync && echo "  → sync complete" || echo "  → sync failed (re-run: vdirsyncer sync)"
 fi
 
-# ── 6. Instrucciones manuales ─────────────────────────────────────────
+# ── 6. Manual step ────────────────────────────────────────────────────
 echo ""
 echo "────────────────────────────────────────────────────────────"
-echo "PASO MANUAL: Añade esto a ~/.config/niri/rules.kdl"
+echo "MANUAL STEP: Add this to ~/.config/niri/config.kdl"
 echo "────────────────────────────────────────────────────────────"
-cat "$REPO_DIR/niri/khal-float.kdl"
+/bin/cat "$REPO_DIR/niri/khal-float.kdl"
 echo ""
-echo "Luego: killall waybar && waybar &"
+echo "Then: killall waybar && waybar &"
