@@ -8,11 +8,7 @@
 	"gtk-layer-shell": true,
 	"margin": "0px 0px 0px 0px",
 
-	"modules-left": ["custom/pomodoro", 
-    "mpris", 
-    "custom/temp", 
-    "custom/memory"
-  ],
+	"modules-left": ["custom/pomodoro", "custom/mentat", "custom/temp", "custom/memory"],
 	"modules-center": ["niri/workspaces"],
 	"modules-right": [
 		"cpu",
@@ -58,24 +54,19 @@
 		"on-click-middle": "~/.config/waybar/scripts/pomodoro.sh skip"
 	},
 
-	// ── Mpris ─────────────────────────────────────────────────────────
-	"mpris": {
-		"format":         "<span font='Symbols Nerd Font 14'>{status_icon}</span>  {artist} — {title}",
-		"format-paused":  "<span font='Symbols Nerd Font 14'>{status_icon}</span>  {artist} — {title}",
-		"format-stopped": "",
-		"status-icons": {
-			"playing": "",
-			"paused":  "",
-			"stopped": ""
-		},
-		"max-length": 50,
+	// ── Mentat — canticulum (música) / officium (tarea del vault) ─────
+	"custom/mentat": {
+		"exec":            "~/.config/waybar/scripts/mentat.sh",
+		"return-type":     "json",
+		"interval":        3,
+		"signal":          13,
+		"escape":          false,
+		"tooltip":         true,
 		"on-click":        "playerctl play-pause",
 		"on-click-right":  "playerctl next",
 		"on-click-middle": "playerctl previous",
 		"on-scroll-up":    "playerctl next",
-		"on-scroll-down":  "playerctl previous",
-		"tooltip": true,
-		"tooltip-format": "{player} · {album}"
+		"on-scroll-down":  "playerctl previous"
 	},
 	// ── Workspaces (Niri) ──────────────────────────────────────────────
 	"niri/workspaces": {
