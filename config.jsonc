@@ -132,8 +132,8 @@
 
 	// ── Pulseaudio ─────────────────────────────────────────────────────
 	"pulseaudio": {
-		"format":         "<span font='Symbols Nerd Font 16'>{icon}</span>",
-		"format-muted":   "<span font='Symbols Nerd Font 16'></span>",
+		"format":         "<span font='Symbols Nerd Font 16' rise='1500'>{icon}</span>",
+		"format-muted":   "<span font='Symbols Nerd Font 16' rise='1500'></span>",
 		"format-icons": {
 			"default": ["", "", ""]
 		},
@@ -163,15 +163,16 @@
 	},
 	// ── Clock ─────────────────────────────────────────────────────────
 	"clock": {
-		"format":     "{:%H:%M}",
-		"format-alt": "{:%H:%M  %a %d %b %Y}",
-		"tooltip-format": "<tt><small>{calendar}</small></tt>"
+		"format":          "{:%H:%M}",
+		"format-alt":      "{:%H:%M  %a %d %b %Y}",
+		"tooltip-format":  "<tt><small>{calendar}</small></tt>",
+		"on-click-right":  "kitty --class khal-float --title 'Calendar' khal interactive"
 	},
 
 
 	// ── Power ─────────────────────────────────────────────────────────
 	"custom/power": {
-		"format": "⏻",
+		"format": "<span font='Symbols Nerd Font 13'></span>",
 		"tooltip": false,
 		"on-click": "wlogout -p layer-shell"
 	}

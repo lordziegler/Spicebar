@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync Outlook calendar every 30 min
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=30min
+
+[Install]
+WantedBy=timers.target

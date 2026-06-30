@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync Outlook calendar (one-shot)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/vdirsyncer/secrets
+ExecStart=/usr/bin/vdirsyncer sync

@@ -1,0 +1,16 @@
+[calendars]
+[[outlook]]
+path = ~/.calendars/outlook/
+color = bright yellow
+
+[sqlite]
+path = ~/.local/share/khal/khal.db
+
+[locale]
+timeformat = %H:%M
+dateformat = %d/%m/%Y
+datetimeformat = %d/%m/%Y %H:%M
+firstweekday = 0
+
+[view]
+theme = dark

@@ -1,0 +1,7 @@
+// Pegar dentro del bloque raíz de ~/.config/niri/config.kdl
+window-rule {
+    match app-id="khal-float"
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 550; }
+}

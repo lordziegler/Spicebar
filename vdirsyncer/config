@@ -1,0 +1,16 @@
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+[pair outlook]
+a = "outlook_remote"
+b = "outlook_local"
+collections = [null]
+
+[storage outlook_remote]
+type = "http"
+url = "$OUTLOOK_ICAL_URL"
+
+[storage outlook_local]
+type = "filesystem"
+path = "~/.calendars/outlook/"
+fileext = ".ics"
