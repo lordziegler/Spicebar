@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 # Mentat — dual widget: música activa → canticulum / silencio → officium
-# El Mentat procesa lo más relevante: el bardo o el deber imperial.
 
 VAULT="$HOME/Documents/Cerebrum_Secundum"
-PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
-PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
+PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
+PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
 TASK_ICON="♁"
 
 STATUS=$(playerctl status 2>/dev/null || echo "Stopped")
@@ -21,9 +20,11 @@ if [[ "$STATUS" == "Playing" || "$STATUS" == "Paused" ]]; then
         ICON="$PAUS_ICON"; CLS="canticulum-pausa"
     fi
 
-    TEXT=$(printf "%s  %s — %s" "$ICON" "$ARTIST" "$TITLE" | cut -c1-60)
-    printf '{"text":"%s","class":"%s","tooltip":"%s · %s"}\n' \
-        "$TEXT" "$CLS" "$PLAYER" "$ALBUM"
+    # Trunca solo el contenido visible — el span del icón queda intacto
+    CONTENT=$(printf "%s — %s" "$ARTIST" "$TITLE" | cut -c1-38)
+    [[ "${#CONTENT}" -ge 38 ]] && CONTENT="${CONTENT%?}…"
+    printf '{"text":"%s  %s","class":"%s","tooltip":"%s · %s"}\n' \
+        "$ICON" "$CONTENT" "$CLS" "$PLAYER" "$ALBUM"
     exit 0
 fi
 
