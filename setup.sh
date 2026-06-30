@@ -135,6 +135,8 @@ if [[ "$CALENDAR" == true ]]; then
     systemctl --user enable --now vdirsyncer.timer
     echo "  → timer active"
 
+    echo "Discovering collections..."
+    yes | vdirsyncer discover 2>&1 || true
     echo "Syncing calendars..."
     vdirsyncer sync && echo "  → sync complete" || echo "  → sync failed (re-run: vdirsyncer sync)"
 fi

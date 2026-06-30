@@ -1,4 +1,4 @@
-// Pegar dentro del bloque raíz de ~/.config/niri/config.kdl
+// Paste inside the root block of ~/.config/niri/config.kdl
 window-rule {
     match app-id="khal-float"
     open-floating true
