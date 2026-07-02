@@ -16,7 +16,7 @@ if [[ ! -d "$DATA_DIR" || ! -f "$DATA_DIR/apts" ]]; then
 fi
 
 # Sync todos from Obsidian daily notes → calcurse todo file (read-only, overwrite each open)
-grep -r --include="*.md" -h "- \[ \]" "$VAULT/02-Areae/Vita" 2>/dev/null \
+grep -r --include="*.md" -h -- "- \[ \]" "$VAULT/02-Areae/Vita" 2>/dev/null \
     | sed 's/^[[:space:]]*- \[ \] //' \
     | sed 's/ 📅 [0-9-]*//' \
     | sed 's/\[\[//g; s/\]\]//g' \
