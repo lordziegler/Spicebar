@@ -18,7 +18,7 @@ fi
 # color6/14 = ANSI cyan  → muted gold  (calendar day headers)
 # color3/11 = ANSI yellow → bright gold (selected date — already close)
 exec kitty \
-    --app-id khal-float \
+    --app-id calcurse-float \
     --title "Calendar" \
     --override "background=#0E0C08" \
     --override "foreground=#D4A843" \

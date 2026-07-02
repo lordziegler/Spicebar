@@ -1,8 +1,8 @@
 // Paste inside the root block of ~/.config/niri/rules.kdl
 
-// khal calendar: flotante centrado
+// calcurse calendar: flotante centrado (right-click en reloj)
 window-rule {
-    match app-id="khal-float"
+    match app-id="calcurse-float"
     open-floating true
     default-column-width { fixed 900; }
     default-window-height { fixed 550; }
