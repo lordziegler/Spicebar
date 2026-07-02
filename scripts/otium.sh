@@ -14,6 +14,8 @@ if [[ -z "$RAW" ]]; then
     exit 0
 fi
 
+_esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+
 TASK=$(printf '%s' "$RAW" \
     | sed 's/^[[:space:]]*- \[ \] //' \
     | sed 's/ 📅 [0-9-]*//' \
@@ -21,6 +23,7 @@ TASK=$(printf '%s' "$RAW" \
     | sed 's/ #[^ ]*//g' \
     | cut -c1-42)
 [[ "${#TASK}" -ge 42 ]] && TASK="${TASK%?}…"
+TASK=$(_esc "$TASK")
 
 printf '{"text":"%s  %s","class":"officium","tooltip":"Officium · %s"}\n' \
     "$ICON" "$TASK" "$TASK"
