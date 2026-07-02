@@ -277,11 +277,46 @@ tooltip label {
 		0 0 32px rgba(251, 73, 52, 0.35);
 }
 
-/* ── Mentat — canticulum / officium ────────────────────────────────── */
+/* ── Otium — vault icon / officium task (módulo independiente) ──────── */
+#custom-otium {
+	font-size: 13px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/* otium — ♁ como workspace inactivo pero solar-flare · atajo al vault */
+#custom-otium.otium {
+	font-size: 20px;
+	color: @solar-flare;
+	opacity: 0.72;
+	text-shadow:
+		0 0 2px rgba(240, 176, 48, 0.9),
+		0 0 10px rgba(240, 176, 48, 0.45),
+		0 0 22px rgba(240, 176, 48, 0.18);
+}
+
+/* officium — sangre Corrino · deber pendiente · no puede ignorarse */
+#custom-otium.officium {
+	color: @power-red;
+	opacity: 0.90;
+	letter-spacing: 0.5px;
+	text-shadow:
+		0 0 6px rgba(251, 73, 52, 0.5),
+		0 0 14px rgba(251, 73, 52, 0.25);
+}
+
+/* ── Mentat — solo canticulum ───────────────────────────────────────── */
 #custom-mentat {
 	font-size: 13px;
 	padding-left: 10px;
 	padding-right: 10px;
+}
+
+#custom-mentat.hidden {
+	padding: 0;
+	margin: 0;
+	min-width: 0;
+	font-size: 0;
 }
 
 #custom-mentat.canticulum {
@@ -293,26 +328,6 @@ tooltip label {
 #custom-mentat.canticulum-pausa {
 	color: @muted;
 	opacity: 0.65;
-}
-
-/* officium — sangre Corrino · deber pendiente · no puede ignorarse */
-#custom-mentat.officium {
-	color: @power-red;
-	opacity: 0.90;
-	letter-spacing: 0.5px;
-	text-shadow:
-		0 0 6px rgba(251, 73, 52, 0.5),
-		0 0 14px rgba(251, 73, 52, 0.25);
-}
-
-/* otium — ♁ como workspace inactivo pero solar-flare · atajo al vault */
-#custom-mentat.otium {
-	color: @solar-flare;
-	opacity: 0.72;
-	text-shadow:
-		0 0 2px rgba(240, 176, 48, 0.9),
-		0 0 10px rgba(240, 176, 48, 0.45),
-		0 0 22px rgba(240, 176, 48, 0.18);
 }
 
 /* ── Pomodoro (idle = coat of arms, active = timer) ─────────────────── */

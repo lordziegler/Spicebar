@@ -8,7 +8,7 @@
 	"gtk-layer-shell": true,
 	"margin": "0px 0px 0px 0px",
 
-	"modules-left": ["custom/pomodoro", "custom/mentat", "custom/temp", "custom/memory"],
+	"modules-left": ["custom/pomodoro", "custom/otium", "custom/mentat", "custom/temp", "custom/memory"],
 	"modules-center": ["niri/workspaces"],
 	"modules-right": [
 		"cpu",
@@ -54,7 +54,19 @@
 		"on-click-middle": "~/.config/waybar/scripts/pomodoro.sh skip"
 	},
 
-	// ── Mentat — canticulum (música) / officium (tarea del vault) ─────
+	// ── Otium — vault/task display independiente ─────────────────────
+	"custom/otium": {
+		"exec":            "~/.config/waybar/scripts/otium.sh",
+		"return-type":     "json",
+		"interval":        3,
+		"escape":          false,
+		"tooltip":         true,
+		"on-click":        "obsidian 'obsidian://open?vault=Cerebrum_Secundum'",
+		"on-click-middle": "~/.config/waybar/scripts/mentat-github.sh",
+		"on-click-right":  "~/.config/waybar/scripts/weather-open.sh"
+	},
+
+	// ── Mentat — solo canticulum (música activa) ──────────────────────
 	"custom/mentat": {
 		"exec":            "~/.config/waybar/scripts/mentat.sh",
 		"return-type":     "json",
@@ -64,7 +76,7 @@
 		"tooltip":         true,
 		"on-click":        "~/.config/waybar/scripts/mentat-click.sh",
 		"on-click-right":  "~/.config/waybar/scripts/mentat-next.sh",
-		"on-click-middle": "~/.config/waybar/scripts/mentat-github.sh",
+		"on-click-middle": "~/.config/waybar/scripts/mentat-mode-toggle.sh",
 		"on-scroll-up":    "playerctl next",
 		"on-scroll-down":  "playerctl previous"
 	},

@@ -1,7 +1,25 @@
-// Paste inside the root block of ~/.config/niri/config.kdl
+// Paste inside the root block of ~/.config/niri/rules.kdl
+
+// khal calendar: flotante centrado
 window-rule {
     match app-id="khal-float"
     open-floating true
     default-column-width { fixed 900; }
     default-window-height { fixed 550; }
+}
+
+// GitHub contributions feed (middle-click en ♁)
+window-rule {
+    match app-id="github-float"
+    open-floating true
+    default-column-width { fixed 820; }
+    default-window-height { fixed 420; }
+}
+
+// Weather dashboard (right-click en ♁)
+window-rule {
+    match app-id="weather-float"
+    open-floating true
+    default-column-width { fixed 820; }
+    default-window-height { fixed 560; }
 }
