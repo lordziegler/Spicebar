@@ -20,6 +20,6 @@ window-rule {
 window-rule {
     match app-id="weather-float"
     open-floating true
-    default-column-width { fixed 820; }
+    default-column-width { fixed 1060; }
     default-window-height { fixed 560; }
 }
