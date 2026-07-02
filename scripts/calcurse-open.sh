@@ -4,6 +4,7 @@
 # relying on calcurse's internal color scheme (which hardcodes red for dark mode).
 
 DATA_DIR="$HOME/.local/share/calcurse-outlook"
+VAULT="$HOME/Documents/Cerebrum_Secundum"
 
 if ! command -v calcurse &>/dev/null; then
     notify-send -u critical "Calendar" "calcurse not found — install with: sudo pacman -S calcurse"
@@ -13,6 +14,16 @@ fi
 if [[ ! -d "$DATA_DIR" || ! -f "$DATA_DIR/apts" ]]; then
     notify-send -u normal "Calendar" "No events yet — run setup.sh to sync"
 fi
+
+# Sync todos from Obsidian daily notes → calcurse todo file (read-only, overwrite each open)
+grep -r --include="*.md" -h "- \[ \]" "$VAULT/02-Areae/Vita" 2>/dev/null \
+    | sed 's/^[[:space:]]*- \[ \] //' \
+    | sed 's/ 📅 [0-9-]*//' \
+    | sed 's/\[\[//g; s/\]\]//g' \
+    | sed 's/ #[^ ]*//g' \
+    | sed '/^[[:space:]]*$/d' \
+    | while IFS= read -r task; do printf '[0]%s\n' "$task"; done \
+    > "$DATA_DIR/todo"
 
 # color1/9  = ANSI red   → amber  (borders, text, status bar highlight)
 # color6/14 = ANSI cyan  → muted gold  (calendar day headers)
