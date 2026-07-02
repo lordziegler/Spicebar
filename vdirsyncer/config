@@ -1,16 +1,59 @@
 [general]
-status_path = "~/.local/share/vdirsyncer/status/"
+status_path = "/home/ziegler/.local/share/vdirsyncer/status/"
 
-[pair outlook]
-a = "outlook_remote"
-b = "outlook_local"
-collections = [null]
+[pair hb]
+a = "hb_remote"
+b = "hb_local"
+collections = null
 
-[storage outlook_remote]
+[storage hb_remote]
 type = "http"
-url = "$OUTLOOK_ICAL_URL"
+url = "https://outlook.live.com/owa/calendar/00000000-0000-0000-0000-000000000000/61b08a8d-ba1f-45b3-9772-2f7406bee098/cid-4B35E7E5DB74D40B/calendar.ics"
 
-[storage outlook_local]
+[storage hb_local]
 type = "filesystem"
-path = "~/.calendars/outlook/"
+path = "/home/ziegler/.calendars/hb/"
 fileext = ".ics"
+
+[pair dw]
+a = "dw_remote"
+b = "dw_local"
+collections = null
+
+[storage dw_remote]
+type = "http"
+url = "https://outlook.live.com/owa/calendar/00000000-0000-0000-0000-000000000000/5e4fb0d8-15d6-4d0e-bc7c-85040cca74ab/cid-4B35E7E5DB74D40B/calendar.ics"
+
+[storage dw_local]
+type = "filesystem"
+path = "/home/ziegler/.calendars/dw/"
+fileext = ".ics"
+
+[pair ex]
+a = "ex_remote"
+b = "ex_local"
+collections = null
+
+[storage ex_remote]
+type = "http"
+url = "https://outlook.live.com/owa/calendar/00000000-0000-0000-0000-000000000000/7f6f25ae-9132-4434-8970-3a340d080755/cid-4B35E7E5DB74D40B/calendar.ics"
+
+[storage ex_local]
+type = "filesystem"
+path = "/home/ziegler/.calendars/ex/"
+fileext = ".ics"
+
+[pair dl]
+a = "dl_remote"
+b = "dl_local"
+collections = null
+
+[storage dl_remote]
+type = "http"
+url = "https://outlook.live.com/owa/calendar/00000000-0000-0000-0000-000000000000/8b05377f-8d97-484b-ab54-fc76978eb826/cid-4B35E7E5DB74D40B/calendar.ics"
+
+[storage dl_local]
+type = "filesystem"
+path = "/home/ziegler/.calendars/dl/"
+fileext = ".ics"
+

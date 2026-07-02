@@ -1,10 +1,26 @@
 [calendars]
-[[outlook]]
-path = ~/.calendars/outlook/
+[[hb]]
+path = /home/ziegler/.calendars/hb/
 color = yellow
+readonly = true
+
+[[dw]]
+path = /home/ziegler/.calendars/dw/
+color = yellow
+readonly = true
+
+[[ex]]
+path = /home/ziegler/.calendars/ex/
+color = yellow
+readonly = true
+
+[[dl]]
+path = /home/ziegler/.calendars/dl/
+color = yellow
+readonly = true
 
 [sqlite]
-path = ~/.local/share/khal/khal.db
+path = /home/ziegler/.local/share/khal/khal.db
 
 [locale]
 timeformat = %H:%M

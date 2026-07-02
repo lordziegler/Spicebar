@@ -1,3 +1,5 @@
 # Secretos — nunca subir al repo
 vdirsyncer/secrets
 **/secrets
+*.bak
+/docs
