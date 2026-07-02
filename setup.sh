@@ -1,12 +1,27 @@
 #!/usr/bin/env bash
-# Spicebar setup — links configs, generates style.css, and sets up calendar sync.
+# Spicebar setup — installs deps, links configs, syncs calendars, and restarts waybar.
 # Usage: bash setup.sh
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WAYBAR_DIR="$HOME/.config/waybar"
 
-# ── 1. Check dependencies ──────────────────────────────────────────────
+# ── 0. Install packages ────────────────────────────────────────────────
+# obsidian is AUR — install separately with paru/yay if needed
+PKGS=(waybar kitty playerctl swaync blueman pavucontrol wlogout libnotify
+      curl github-cli calcurse vdirsyncer nm-connection-editor)
+
+MISSING=()
+for pkg in "${PKGS[@]}"; do
+    pacman -Qi "$pkg" &>/dev/null || MISSING+=("$pkg")
+done
+
+if [[ ${#MISSING[@]} -gt 0 ]]; then
+    echo "Installing: ${MISSING[*]}"
+    sudo pacman -S --needed "${MISSING[@]}"
+fi
+
+# ── 1. Check hard dependencies ─────────────────────────────────────────
 need() { command -v "$1" &>/dev/null && return; echo "Missing: $1 — install with: sudo pacman -S $2" >&2; exit 1; }
 need waybar    waybar
 need kitty     kitty
@@ -124,11 +139,27 @@ if [[ "$CALENDAR" == true ]]; then
         || echo "  → sync failed (re-run: vdirsyncer sync)"
 fi
 
-# ── 5. Manual step ────────────────────────────────────────────────────
+# ── 5. Niri window rules ───────────────────────────────────────────────
+NIRI_RULES="$HOME/.config/niri/rules.kdl"
+if [[ -f "$NIRI_RULES" ]] && grep -q "calcurse-float" "$NIRI_RULES"; then
+    echo "Niri rules already present — skipping"
+else
+    echo "Injecting niri window rules..."
+    mkdir -p "$(dirname "$NIRI_RULES")"
+    cat "$REPO_DIR/niri/waybar-floats.kdl" >> "$NIRI_RULES"
+    echo "  → $NIRI_RULES"
+    niri msg action load-config-file "$HOME/.config/niri/config.kdl" 2>/dev/null \
+        && echo "  → niri config reloaded" \
+        || echo "  → reload niri manually to apply window rules"
+fi
+
+# ── 6. Restart waybar ─────────────────────────────────────────────────
+echo "Restarting waybar..."
+pkill waybar 2>/dev/null || true
+sleep 0.3
+waybar &>/dev/null &
+disown
+echo "  → waybar running (pid $!)"
+
 echo ""
-echo "────────────────────────────────────────────────────────────"
-echo "MANUAL STEP: Add this to ~/.config/niri/config.kdl"
-echo "────────────────────────────────────────────────────────────"
-/bin/cat "$REPO_DIR/niri/waybar-floats.kdl"
-echo ""
-echo "Then: killall waybar && waybar &"
+echo "Done."

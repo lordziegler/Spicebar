@@ -68,15 +68,28 @@ Icons use layered `text-shadow` to simulate stroke weight — the symbols are in
 | Clock | `HH:MM`; left-click for full date; **right-click opens calendar** |
 | Power | `wlogout` layer-shell |
 
-### MPRIS
+### Otium / Officium — vault anchor
 
-Media module on the left. Shows artist — title with play/pause/next/prev on scroll and click.
+A permanent module between the pomodoro and the music player. Reads the first open task (`- [ ]`) from the Obsidian vault and displays it. When there are no pending tasks it shows ♁ alone.
 
-### Calendar — Outlook.com via khal
+- **Left click** — open Obsidian vault
+- **Middle click** — GitHub contributions graph (floating Kitty window)
+- **Right click** — weather dashboard via wttr.in (floating Kitty window, auto-detects location by IP)
 
-Right-click the clock to open `khal interactive` in a floating Kitty terminal. Events are synced from Outlook.com every 30 minutes via a systemd user timer — no persistent daemon.
+### Canticulum — MPRIS
 
-Colors inherit from Kitty's Gruvbox Hard Dark theme. No palette is hardcoded.
+Music module. Only visible when a player is active. Shows play/pause icon + artist — title. Collapses to zero width when nothing is playing.
+
+- **Left click** — play / pause
+- **Right click** — next track
+- **Middle click** — toggle compact mode (icon only)
+- **Scroll** — next / previous track
+
+### Calendar — Outlook.com via calcurse
+
+Right-click the clock to open `calcurse` in a floating Kitty terminal. Events are synced from Outlook.com every 30 minutes via a systemd user timer — no persistent daemon. Open tasks from the Obsidian vault (`02-Areae/Vita/`) are written to the calcurse todo list on every open.
+
+Colors are applied as Kitty overrides using the Imperator palette — no calcurse color config needed.
 
 ---
 
@@ -88,26 +101,19 @@ bash setup.sh
 ```
 
 `setup.sh` will:
-- Verify that `khal` and `vdirsyncer` are installed (`sudo pacman -S khal vdirsyncer`)
-- Prompt for your Outlook.com iCal URL on first run and save it to `~/.config/vdirsyncer/secrets` (mode 600, never committed)
+- Install missing packages via `sudo pacman -S --needed`
 - Symlink all configs to their target locations under `~/.config/`
+- Prompt for your Outlook.com ICS URL on first run and save it to `~/.config/vdirsyncer/secrets` (mode 600, never committed)
+- Generate the vdirsyncer config and write the calcurse conf
 - Enable and start the `vdirsyncer.timer` systemd user unit
 - Run the initial calendar sync
+- Inject the niri floating window rules into `~/.config/niri/rules.kdl` if not already present
+- Restart waybar
 
-**Getting your Outlook.com iCal URL:**
+**Getting your Outlook.com ICS URL:**
 1. Go to [outlook.live.com](https://outlook.live.com) → ⚙️ Settings → View all Outlook settings
 2. Calendar → Shared calendars → Publish a calendar
 3. Select your calendar → Publish → copy the **ICS** link
-
-**Niri floating window rule** — add to `~/.config/niri/rules.kdl` (or equivalent):
-```kdl
-window-rule {
-    match app-id="khal-float"
-    open-floating true
-    default-column-width { fixed 900; }
-    default-window-height { fixed 550; }
-}
-```
 
 ---
 
@@ -124,9 +130,12 @@ window-rule {
 | `pavucontrol` | PulseAudio volume GUI |
 | `wlogout` | Power menu |
 | `notify-send` | Pomodoro phase notifications |
-| `khal` | TUI calendar (calendar feature) |
+| `calcurse` | TUI calendar (calendar feature) |
 | `vdirsyncer` | iCal sync from Outlook.com (calendar feature) |
-| `kitty` | Terminal for calendar floating window |
+| `gh` | GitHub CLI — contributions graph |
+| `curl` | Weather dashboard via wttr.in |
+| `kitty` | Terminal for floating windows |
+| `obsidian` | Vault — task display in otium (optional, AUR) |
 | JetBrains Mono Nerd Font | Primary font |
 | Symbols Nerd Font | Icon glyphs (wifi, battery, bluetooth…) |
 
@@ -159,4 +168,22 @@ power red         #fb4934                  critical states
 
 ## Part of Imperator
 
-The amber palette, the CRT aesthetic, and the planetary motif run through every componen.
+The amber palette, the CRT aesthetic, and the planetary motif run through every component.
+
+---
+
+## Acknowledgements
+
+**[vdawg-git/space_dots](https://github.com/vdawg-git/space_dots)** — the waybar layout and module philosophy here drew direct inspiration from this configuration. The approach of treating each module as a deliberate design decision, not a default, comes from studying that work.
+
+---
+
+## Bibliography
+
+- [Waybar wiki](https://github.com/Alexays/Waybar/wiki) — module reference and configuration format
+- [Niri window rules](https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules) — floating window configuration
+- [vdirsyncer docs](https://vdirsyncer.pimutils.org/) — CalDAV/iCal sync daemon
+- [calcurse manual](https://calcurse.org/files/manual.html) — TUI calendar configuration and import format
+- [wttr.in](https://wttr.in/:help) — terminal weather service
+- [Pango markup](https://docs.gtk.org/Pango/pango_markup.html) — `<span>` font and color control used throughout `config.jsonc`
+- [vdawg-git/space_dots](https://github.com/vdawg-git/space_dots) — waybar dotfiles that inspired this configuration
