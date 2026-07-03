@@ -77,8 +77,8 @@
 		"on-click":        "~/.config/waybar/scripts/mentat-click.sh",
 		"on-click-right":  "~/.config/waybar/scripts/mentat-next.sh",
 		"on-click-middle": "~/.config/waybar/scripts/mentat-mode-toggle.sh",
-		"on-scroll-up":    "playerctl next",
-		"on-scroll-down":  "playerctl previous"
+		"on-scroll-up":    "playerctl --ignore-player=kdeconnect next",
+		"on-scroll-down":  "playerctl --ignore-player=kdeconnect previous"
 	},
 	// ── Workspaces (Niri) ──────────────────────────────────────────────
 	"niri/workspaces": {

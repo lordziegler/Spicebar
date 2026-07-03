@@ -5,7 +5,7 @@ PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
 PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
 
 MODE=$(cat "$HOME/.local/state/waybar/mentat-mode" 2>/dev/null || echo "expanded")
-STATUS=$(playerctl status 2>/dev/null || echo "Stopped")
+STATUS=$(playerctl --ignore-player=kdeconnect status 2>/dev/null || echo "Stopped")
 
 if [[ "$STATUS" != "Playing" && "$STATUS" != "Paused" ]]; then
     printf '{"text":"","class":"hidden"}\n'
@@ -19,10 +19,10 @@ else
 fi
 
 _esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
-ARTIST=$(_esc "$(playerctl metadata artist 2>/dev/null)")
-TITLE=$(_esc "$(playerctl metadata title 2>/dev/null)")
-ALBUM=$(_esc "$(playerctl metadata album 2>/dev/null)")
-PLAYER=$(_esc "$(playerctl metadata --format '{{playerName}}' 2>/dev/null)")
+ARTIST=$(_esc "$(playerctl --ignore-player=kdeconnect metadata artist 2>/dev/null)")
+TITLE=$(_esc "$(playerctl --ignore-player=kdeconnect metadata title 2>/dev/null)")
+ALBUM=$(_esc "$(playerctl --ignore-player=kdeconnect metadata album 2>/dev/null)")
+PLAYER=$(_esc "$(playerctl --ignore-player=kdeconnect metadata --format '{{playerName}}' 2>/dev/null)")
 
 if [[ "$MODE" == "compact" ]]; then
     printf '{"text":"%s","class":"%s-compact","tooltip":"%s — %s"}\n' \
