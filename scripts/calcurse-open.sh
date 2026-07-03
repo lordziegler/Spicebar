@@ -15,9 +15,11 @@ if [[ ! -d "$DATA_DIR" || ! -f "$DATA_DIR/apts" ]]; then
     notify-send -u normal "Calendar" "No events yet — run setup.sh to sync"
 fi
 
-# Sync from Outlook + re-import on every open — R can't reload external file changes
-vdirsyncer sync 2>/dev/null
+# Import from current ICS on disk (fast, ~0.3s) — correct timezone + dedup
 "$(dirname "$0")/calcurse-import.sh" 2>/dev/null
+# Background sync from Outlook (~3s network) — data ready for the next open
+(vdirsyncer sync 2>/dev/null && "$(dirname "$0")/calcurse-import.sh" 2>/dev/null) &
+disown
 
 # Sync todos from Obsidian daily notes → calcurse todo file (read-only, overwrite each open)
 grep -r --include="*.md" -h -- "- \[ \]" "$VAULT/02-Areae/Vita" 2>/dev/null \
