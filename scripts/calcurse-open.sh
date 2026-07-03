@@ -15,7 +15,8 @@ if [[ ! -d "$DATA_DIR" || ! -f "$DATA_DIR/apts" ]]; then
     notify-send -u normal "Calendar" "No events yet — run setup.sh to sync"
 fi
 
-# Re-import ICS on every open so data is always current (R key can't reload external changes)
+# Sync from Outlook + re-import on every open — R can't reload external file changes
+vdirsyncer sync 2>/dev/null
 "$(dirname "$0")/calcurse-import.sh" 2>/dev/null
 
 # Sync todos from Obsidian daily notes → calcurse todo file (read-only, overwrite each open)

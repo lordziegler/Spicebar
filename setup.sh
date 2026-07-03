@@ -112,9 +112,9 @@ if [[ "$CALENDAR" == true ]]; then
     # Write calcurse config (only confirmed-valid keys; colors via kitty overrides)
     mkdir -p "$CAL_DATA"
     printf '%s\n' \
-        'general.autosave=yes' \
+        'general.autosave=no' \
         'general.confirmquit=no' \
-        'general.firstdayofweek=monday' \
+        'general.firstdayofweek=sunday' \
         'general.systemdialogs=no' \
         'appearance.layout=1' \
         'appearance.notifybar=yes' \
