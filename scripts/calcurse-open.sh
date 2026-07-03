@@ -15,6 +15,9 @@ if [[ ! -d "$DATA_DIR" || ! -f "$DATA_DIR/apts" ]]; then
     notify-send -u normal "Calendar" "No events yet — run setup.sh to sync"
 fi
 
+# Re-import ICS on every open so data is always current (R key can't reload external changes)
+"$(dirname "$0")/calcurse-import.sh" 2>/dev/null
+
 # Sync todos from Obsidian daily notes → calcurse todo file (read-only, overwrite each open)
 grep -r --include="*.md" -h -- "- \[ \]" "$VAULT/02-Areae/Vita" 2>/dev/null \
     | sed 's/^[[:space:]]*- \[ \] //' \
