@@ -166,8 +166,8 @@ tooltip label {
 		0 0 10px rgba(212, 167, 74, 0.38);
 }
 
-#custom-temp.cool  { color: @muted; opacity: 0.6; }
-#custom-temp.mild  { color: @fg; }
+#custom-temp.cool  { color: @muted; opacity: 0.6; text-shadow: 0 0 6px rgba(168, 153, 132, 0.40); }
+#custom-temp.mild  { color: @fg; text-shadow: 0 0 6px rgba(212, 167, 74, 0.45), 0 0 14px rgba(212, 167, 74, 0.18); }
 #custom-temp.warm  { color: #fdd700; text-shadow: 0 0 6px rgba(253, 215, 0, 0.3); }
 #custom-temp.hot   { color: #fe8019; text-shadow: 0 0 8px rgba(254, 128, 25, 0.4); }
 #custom-temp.critical {
@@ -210,14 +210,20 @@ tooltip label {
 #custom-swaync.notification,
 #custom-swaync.inhibited-notification {
 	color: @accent-gold;
-	text-shadow: 0 0 10px rgba(250, 189, 47, 0.6);
 	opacity: 1;
+	text-shadow:
+		0 0 2px rgba(255, 215, 0, 1),
+		0 0 10px rgba(250, 189, 47, 0.75),
+		0 0 22px rgba(250, 189, 47, 0.35);
 }
 
 #custom-swaync.none,
 #custom-swaync.inhibited-none {
 	color: @fg;
 	opacity: 0.7;
+	text-shadow:
+		0 0 6px rgba(212, 167, 74, 0.55),
+		0 0 14px rgba(212, 167, 74, 0.20);
 }
 
 #custom-swaync.dnd-notification,
@@ -248,7 +254,10 @@ tooltip label {
 
 #bluetooth.connected {
 	color: #8ec07c;  /* gruvbox bright-green */
-	text-shadow: 0 0 8px rgba(142, 192, 124, 0.5);
+	text-shadow:
+		0 0 3px rgba(142, 192, 124, 0.90),
+		0 0 10px rgba(142, 192, 124, 0.50),
+		0 0 20px rgba(142, 192, 124, 0.25);
 }
 
 #bluetooth.disabled {
@@ -280,8 +289,8 @@ tooltip label {
 /* ── Otium — vault icon / officium task (módulo independiente) ──────── */
 #custom-otium {
 	font-size: 13px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 4px;
+	padding-right: 16px;
 }
 
 /* otium — ♁ como workspace inactivo pero solar-flare · atajo al vault */
@@ -297,9 +306,9 @@ tooltip label {
 
 /* officium — sangre Corrino · deber pendiente · no puede ignorarse */
 #custom-otium.officium {
+	font-size: 20px;
 	color: @power-red;
 	opacity: 0.90;
-	letter-spacing: 0.5px;
 	text-shadow:
 		0 0 6px rgba(251, 73, 52, 0.5),
 		0 0 14px rgba(251, 73, 52, 0.25);
@@ -319,15 +328,22 @@ tooltip label {
 	font-size: 0;
 }
 
-#custom-mentat.canticulum {
+#custom-mentat.canticulum,
+#custom-mentat.canticulum-compact {
 	color: @fg;
 	opacity: 0.88;
-	text-shadow: 0 0 6px rgba(212, 167, 74, 0.25);
+	text-shadow:
+		0 0 4px rgba(212, 168, 67, 0.40),
+		0 0 12px rgba(212, 168, 67, 0.18);
 }
 
-#custom-mentat.canticulum-pausa {
+#custom-mentat.canticulum-pausa,
+#custom-mentat.canticulum-pausa-compact {
 	color: @muted;
 	opacity: 0.65;
+	text-shadow:
+		0 0 4px rgba(168, 153, 132, 0.45),
+		0 0 12px rgba(168, 153, 132, 0.18);
 }
 
 /* ── Pomodoro (idle = coat of arms, active = timer) ─────────────────── */

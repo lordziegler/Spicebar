@@ -1,0 +1,12 @@
+[Unit]
+Description=Signal waybar when Obsidian vault tasks change
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/waybar/scripts/vault-watch.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

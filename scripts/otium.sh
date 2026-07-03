@@ -6,7 +6,9 @@ ICON="♁"
 
 RAW=$(grep -r --include="*.md" -h \
     --exclude-dir=".obsidian" --exclude-dir="05-Formae" --exclude-dir="06-Archivum" \
-    -- "- \[ \]" "$VAULT/01-Incepta" "$VAULT/02-Areae" 2>/dev/null | head -1)
+    -- "- \[ \]" "$VAULT/01-Incepta" "$VAULT/02-Areae" 2>/dev/null \
+    | grep -v '^[[:space:]]*- \[ \][[:space:]]*$' \
+    | head -1)
 
 if [[ -z "$RAW" ]]; then
     printf '{"text":"%s","class":"otium","tooltip":"Cerebrum Secundum · Nulla officia"}\n' \
@@ -25,5 +27,5 @@ TASK=$(printf '%s' "$RAW" \
 [[ "${#TASK}" -ge 42 ]] && TASK="${TASK%?}…"
 TASK=$(_esc "$TASK")
 
-printf '{"text":"%s  %s","class":"officium","tooltip":"Officium · %s"}\n' \
-    "$ICON" "$TASK" "$TASK"
+printf '{"text":"%s ✶","class":"officium","tooltip":"Officium · %s"}\n' \
+    "$ICON" "$TASK"
