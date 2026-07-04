@@ -23,3 +23,19 @@ window-rule {
     default-column-width { fixed 1060; }
     default-window-height { fixed 560; }
 }
+
+// Network manager (click en icono wifi)
+window-rule {
+    match app-id="nm-connection-editor"
+    open-floating true
+    default-column-width { fixed 750; }
+    default-window-height { fixed 550; }
+}
+
+// Bluetooth manager (click en icono bluetooth)
+window-rule {
+    match app-id="blueman-manager"
+    open-floating true
+    default-column-width { fixed 550; }
+    default-window-height { fixed 400; }
+}
