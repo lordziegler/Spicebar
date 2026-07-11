@@ -17,7 +17,19 @@ HALF=""   # 55-65°C
 TQT=""   # 65-75°C
 FULL=""   # > 75°C
 
-RAW=$(cat /sys/class/hwmon/hwmon5/temp1_input 2>/dev/null || echo 0)
+# El índice de hwmon NO es estable entre reinicios: si el kernel renumera,
+# leer /sys/class/hwmon/hwmon5 devuelve vacío -> TEMP=0 -> el icono se queda
+# clavado en "cool" en silencio. Se resuelve por NOMBRE del sensor.
+HWMON=""
+for h in /sys/class/hwmon/hwmon*; do
+    [[ "$(cat "$h/name" 2>/dev/null)" == "coretemp" ]] && { HWMON="$h"; break; }
+done
+# Reserva: acpitz sirve si no hay coretemp (p.ej. AMD -> k10temp; ajústalo aquí)
+[[ -z "$HWMON" ]] && for h in /sys/class/hwmon/hwmon*; do
+    [[ "$(cat "$h/name" 2>/dev/null)" == "acpitz" ]] && { HWMON="$h"; break; }
+done
+
+RAW=$(cat "$HWMON/temp1_input" 2>/dev/null || echo 0)
 TEMP=$(( RAW / 1000 ))
 
 if   (( TEMP >= 75 )); then ICON="$FULL";  CLS="critical"
@@ -27,7 +39,7 @@ elif (( TEMP >= 45 )); then ICON="$QTR";   CLS="mild"
 else                        ICON="$EMPTY"; CLS="cool"
 fi
 
-SPAN="<span font='Symbols Nerd Font 14'>$ICON</span>"
+SPAN="<span font='JetBrainsMonoNL Nerd Font Propo 14'>$ICON</span>"
 if [[ -f "$STATE" ]]; then
     TEXT="$SPAN ${TEMP}°"
 else
