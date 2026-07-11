@@ -1,0 +1,52 @@
+/* ══════════════════════════════════════════════════════════════════
+   SPICEBAR · PONS IMPERATORIS — colors.css
+   Design tokens. Paleta "Imperator CRT" (ámbar sobre Corrino oscuro).
+   Fuente de verdad: Imperator-palette.md (prototipo retrofuturista).
+   Importado por style.css con @import "./colors.css".
+
+   GTK 3 CSS NO soporta var()/:root ni color-mix(). Los tokens se
+   expresan con @define-color; los valores rgba() del prototipo se
+   preservan literalmente. No hardcodear color fuera de este archivo.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Backgrounds (Deep Void → Ember Glow) ────────────────────────── */
+/* Cristal esmerilado: el compositor difumina detrás del alpha. */
+@define-color rf-bg          rgba(14, 12, 8, 0.60);   /* #0E0C08 · isla   */
+@define-color rf-bg-alt      rgba(20, 16, 8, 0.62);   /* #141008          */
+@define-color rf-bg-raised   rgba(26, 20, 8, 0.60);   /* #1A1408          */
+@define-color rf-bg-hover    rgba(36, 28, 12, 0.72);  /* #241C0C · hover  */
+@define-color rf-bg-active   rgba(30, 24, 8, 0.72);   /* #1E1808 · active */
+
+/* Sólidos (para tooltips y cálculos de borde) */
+@define-color rf-void        #0E0C08;
+@define-color rf-ember       #141008;
+
+/* ── Foreground / Text (Amber Light → Scorched) ──────────────────── */
+@define-color rf-fg          #D4A843;   /* Amber Light · texto base      */
+@define-color rf-fg-muted    #B8860B;   /* Old Gold · texto secundario   */
+@define-color rf-fg-subtle   #8A7040;   /* Tarnished Signal · inactivo   */
+@define-color rf-fg-comment  #766035;   /* Ash Ember                     */
+@define-color rf-fg-dim      #3A2E10;   /* Scorched · decorativo         */
+
+/* ── Accents (Golden Signal → Solar Flare) ───────────────────────── */
+@define-color rf-accent      #FFD700;   /* Golden Signal · activo/anchor */
+@define-color rf-accent-2    #C8960C;   /* Amber Pulse · bordes/tipos    */
+@define-color rf-accent-3    #A07820;   /* Warm Ochre                    */
+@define-color rf-accent-warm #F0B030;   /* Solar Flare · métodos/planetas*/
+@define-color rf-accent-dim  #D4A843;   /* base amber usado como "dim"   */
+
+/* ── Estado semántico ────────────────────────────────────────────── */
+@define-color rf-warning     #C8960C;   /* Caution Amber                 */
+@define-color rf-critical    #FF6B2B;   /* Plasma Red                    */
+@define-color rf-success     #8DB87A;   /* Radar Green                   */
+@define-color rf-info        #5B8DA8;   /* Signal Blue                   */
+@define-color rf-special     #9870A0;   /* Violet Static                 */
+@define-color rf-inactive    #8A7040;   /* alias de fg-subtle            */
+@define-color rf-number      #D48840;   /* Numeral Filament · temp.hot   */
+
+/* ── Bordes de isla (rim dorado + hairline) ──────────────────────── */
+/* border() del prototipo: 1px accent al ~30% alpha */
+@define-color rf-rim         rgba(255, 215, 0, 0.42);  /* filo superior  */
+@define-color rf-edge        rgba(255, 215, 0, 0.16);  /* contorno tenue */
+@define-color rf-hairline    rgba(255, 215, 0, 0.14);  /* filo inferior  */
+@define-color rf-hover-wash  rgba(255, 215, 0, 0.06);  /* lavado hover   */
