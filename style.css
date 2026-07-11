@@ -1,30 +1,16 @@
-/* ── Gruvbox Hard Dark palette ─────────────────────────────────────── */
-@define-color bar-bg      rgba(14, 12, 8, 0.68);   /* frosted: compositor blurs behind this */
-@define-color main-bg     rgba(14, 12, 8, 0.0);    /* transparent sections */
-@define-color dark        #0E0C08;
+/* ══════════════════════════════════════════════════════════════════
+   SPICEBAR · style.css — barra PLANA v1 (sin islas) + drawer con asa.
+   CPU siempre visible; resto del sistema en el drawer. github añadido.
+   Colores desde colors.css. Ruta de ziegler.png reescrita por setup.sh.
+   ══════════════════════════════════════════════════════════════════ */
 
-@define-color fg          #D4A843;   /* gruvbox fg              */
-@define-color accent-gold #FFD700;   /* gruvbox bright-yellow   */
-@define-color accent-dim  #C8960C;   /* muted gold (hover/idle) */
-@define-color muted       #a89984;   /* gruvbox fg4             */
-@define-color power-red   #fb4934;   /* gruvbox bright-red      */
-
-@define-color tool-bg     #282828;
-@define-color tool-color  #c5b18d;
-@define-color tool-border #383432;
-
-/* ponytail: kept old wb-* names so workspace rules don't need touching */
-@define-color solar-flare  #F0B030;   /* amber solar · sol de Arrakis */
-@define-color wb-color    #a89984;
-@define-color wb-act-bg   #7c6f64;
-@define-color wb-act-color #504945;
-@define-color wb-hvr-bg   rgba(216, 166, 87, 0.12);
-@define-color wb-hvr-color @accent-dim;
+@import "./colors.css";
 
 /* ── Reset ──────────────────────────────────────────────────────────── */
 * {
 	border: none;
 	border-radius: 0px;
+	min-height: 0;                 /* evita recorte vertical de iconos */
 	font-family: "JetBrainsMonoNL Nerd Font Mono";
 	font-weight: bold;
 }
@@ -54,7 +40,7 @@ tooltip {
 	background: @tool-bg;
 	color: @tool-color;
 	border: 1px solid @tool-border;
-	border-radius: 10px;
+	border-radius: 4px;                        /* HUD imperator, casi recto */
 	padding: 12px 16px;
 }
 
@@ -72,33 +58,58 @@ tooltip label {
 
 #workspaces button {
 	font-size: 20px;
+	/* Sin recuadro: GTK pinta fondo+borde por defecto en los botones y eso
+	   es la "cuadrícula". El planeta se marca SÓLO con glow. */
+	background: transparent;
+	border: none;
+	/* Filo reservado en TODOS los botones: si sólo lo tuviera el activo, sería
+	   2px más alto que sus vecinos y el planeta daría un salto al cambiar. */
+	border-bottom: 2px solid transparent;
+	border-radius: 0px;
 	box-shadow: none;
 	padding: 0px;
 	min-width: 32px;
-	color: @solar-flare;
+	/* Reposo = ámbar apagado de las notificaciones (@idle). El dorado
+	   brillante se reserva al workspace activo, así el foco se lee solo. */
+	color: @idle;
+	/* Halo CRT en 3 capas. Ojo: `opacity: 0.7` multiplica también al halo, así
+	   que las capas van a alfa alta para que sobreviva a esa reducción — con
+	   alfas bajas quedaba en ~0.38 efectivo, es decir, invisible.
+	   Aquí sí caben halos anchos: los workspaces no están dentro del
+	   GtkRevealer del drawer, así que nada los recorta. */
 	text-shadow:
-		0 0 2px rgba(240, 176, 48, 0.9),
-		0 0 10px rgba(240, 176, 48, 0.45),
-		0 0 22px rgba(240, 176, 48, 0.18);
+		0 0 4px rgba(212, 167, 74, 1),
+		0 0 11px rgba(212, 167, 74, 0.85),
+		0 0 24px rgba(212, 167, 74, 0.45);
 	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
-	opacity: 0.72;
+	opacity: 0.7;
 }
 
 #workspaces button.active {
 	color: @accent-gold;
+	/* Glow + línea inferior (la paleta Imperator la define así:
+	   `border-bottom: 2px solid #FFD700`). Sin recuadro: sólo el filo. */
+	background: transparent;
+	box-shadow: none;
+	border-bottom: 2px solid @accent-gold;
 	text-shadow:
-		0 0 1px rgba(255, 215, 0, 1),
-		0 0 10px rgba(250, 189, 47, 0.7),
-		0 0 22px rgba(250, 189, 47, 0.3);
-	box-shadow: inset 0 -2px 0 0 @accent-gold;
+		0 0 4px rgba(255, 215, 0, 1),
+		0 0 16px rgba(255, 215, 0, 0.90),
+		0 0 34px rgba(255, 215, 0, 0.45);
 	opacity: 1;
 	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
 }
 
 #workspaces button:hover {
-	color: @wb-hvr-color;
-	background: @wb-hvr-bg;
-	border-radius: 6px;
+	/* SOLO glow (halo), sin recuadro ni fondo — el mismo lenguaje que officium */
+	background: transparent;
+	border: none;
+	box-shadow: none;
+	color: @accent-gold;
+	text-shadow:
+		0 0 5px rgba(255, 215, 0, 1),
+		0 0 14px rgba(255, 215, 0, 0.85),
+		0 0 30px rgba(255, 215, 0, 0.45);
 	opacity: 1;
 	transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682);
 }
@@ -130,7 +141,7 @@ tooltip label {
 
 /* ── Clock: slightly brighter, feels like the "anchor" ─────────────── */
 #clock {
-	color: #fdd700;
+	color: @state-warn;
 	text-shadow:
 		0 0 4px rgba(253, 215, 0, 0.95),
 		0 0 14px rgba(253, 215, 0, 0.55),
@@ -141,7 +152,7 @@ tooltip label {
 /* ── CPU / RAM bars — same amber pair ──────────────────────────────── */
 #cpu,
 #custom-memory {
-	color: #fdd700;
+	color: @state-warn;
 	text-shadow:
 		0 0 3px rgba(253, 215, 0, 0.9),
 		0 0 10px rgba(253, 215, 0, 0.45);
@@ -168,8 +179,8 @@ tooltip label {
 
 #custom-temp.cool  { color: @muted; opacity: 0.6; text-shadow: 0 0 6px rgba(168, 153, 132, 0.40); }
 #custom-temp.mild  { color: @fg; text-shadow: 0 0 6px rgba(212, 167, 74, 0.45), 0 0 14px rgba(212, 167, 74, 0.18); }
-#custom-temp.warm  { color: #fdd700; text-shadow: 0 0 6px rgba(253, 215, 0, 0.3); }
-#custom-temp.hot   { color: #fe8019; text-shadow: 0 0 8px rgba(254, 128, 25, 0.4); }
+#custom-temp.warm  { color: @state-warn; text-shadow: 0 0 6px rgba(253, 215, 0, 0.3); }
+#custom-temp.hot   { color: @state-hot; text-shadow: 0 0 8px rgba(254, 128, 25, 0.4); }
 #custom-temp.critical {
 	color: @power-red;
 	text-shadow: 0 0 10px rgba(251, 73, 52, 0.6);
@@ -178,7 +189,7 @@ tooltip label {
 
 /* ── Battery states ─────────────────────────────────────────────────── */
 #custom-battery.warning {
-	color: #fe8019;
+	color: @state-hot;
 }
 
 #custom-battery.critical {
@@ -187,7 +198,7 @@ tooltip label {
 }
 
 #custom-battery.charging {
-	color: #8ec07c;
+	color: @state-ok;
 	text-shadow: 0 0 8px rgba(142, 192, 124, 0.4);
 }
 
@@ -248,12 +259,12 @@ tooltip label {
 
 /* ── Bluetooth ──────────────────────────────────────────────────────── */
 #bluetooth {
-	color: #83a598;  /* gruvbox bright-aqua */
+	color: @state-info;  /* gruvbox bright-aqua */
 	text-shadow: 0 0 8px rgba(131, 165, 152, 0.55);
 }
 
 #bluetooth.connected {
-	color: #8ec07c;  /* gruvbox bright-green */
+	color: @state-ok;  /* gruvbox bright-green */
 	text-shadow:
 		0 0 3px rgba(142, 192, 124, 0.90),
 		0 0 10px rgba(142, 192, 124, 0.50),
@@ -364,14 +375,14 @@ tooltip label {
 
 #custom-pomodoro.work {
 	min-width: 80px;
-	color: #FFD700;
+	color: @accent-gold;
 	font-size: 14px;
 	text-shadow: 0 0 8px rgba(255, 215, 0, 0.45);
 }
 
 #custom-pomodoro.work-paused {
 	min-width: 80px;
-	color: #FFD700;
+	color: @accent-gold;
 	font-size: 14px;
 	opacity: 0.5;
 }
@@ -379,7 +390,7 @@ tooltip label {
 #custom-pomodoro.break,
 #custom-pomodoro.longbreak {
 	min-width: 80px;
-	color: #8ec07c;
+	color: @state-ok;
 	font-size: 14px;
 	text-shadow: 0 0 8px rgba(142, 192, 124, 0.4);
 }
@@ -387,7 +398,171 @@ tooltip label {
 #custom-pomodoro.break-paused,
 #custom-pomodoro.longbreak-paused {
 	min-width: 80px;
-	color: #8ec07c;
+	color: @state-ok;
 	font-size: 14px;
 	opacity: 0.5;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AÑADIDOS SOBRE LA BASE v1 — github · asa/drawer · CPU visible.
+   (Sin islas: sólo módulos planos como en la v1.)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── GitHub — racha / sparkline (izq del cluster derecho) ────────── */
+#custom-github {
+	color: @accent-dim;
+	font-size: 14px;
+	letter-spacing: 2px;
+	padding-left: 8px;
+	padding-right: 8px;
+	text-shadow: 0 0 7px rgba(200, 150, 12, 0.50);
+}
+
+/* ── SIMETRÍA: celda uniforme para todo icono del cluster derecho ──
+   Los glifos tienen anchos de avance distintos (wifi ≠ bluetooth ≠ volumen),
+   así que un padding igual produce huecos DESIGUALES. La simetría se logra
+   con una celda de ancho fijo: mismo min-width + padding simétrico + sin
+   margin, y el glifo se centra solo dentro de ella.
+   Celda = 24px de contenido + 7px × 2 de padding = 38px, idéntica para todos.
+
+   #vitals .vital (1 id + 1 clase) gana en especificidad a los #id de la v1,
+   así que anula sus `margin-left: 8px` sin tener que tocarlos. */
+/* Requiere los spans en `JetBrainsMonoNL Nerd Font Propo` (ver config.jsonc):
+   en la variante NF el icono de wifi/volumen declara avance 600 pero su tinta
+   llega a 1154, y se derramaba +554 sobre el vecino — ningún padding lo tapa.
+   Propo declara avance 1154 = tinta, así que el glifo ya cabe en su caja y
+   min-width puede centrarlo de verdad. El icono más ancho mide ~25px a 16pt;
+   la celda de 26px los iguala a todos. */
+#cpu,
+#custom-tray-toggle,
+#vitals .vital {
+	min-width: 26px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+/* Separar el cluster de github. */
+#cpu { margin-left: 8px; }
+
+/* ── Asa del drawer (≡) — siempre visible ────────────────────────── */
+/* Reposo = @idle, igual que notificaciones y workspaces inactivos.
+   El drawer se despliega al pasar el ratón, así que el :hover confirma que
+   el asa responde. */
+#custom-tray-toggle {
+	color: @idle;
+	font-size: 16px;
+	opacity: 0.7;
+	text-shadow:
+		0 0 6px rgba(212, 167, 74, 0.55),
+		0 0 14px rgba(212, 167, 74, 0.20);
+	transition: all 0.15s ease;
+}
+
+/* swaync venía a 18px y sobresalía de la celda; lo igualo al resto. */
+#custom-swaync { font-size: 16px; }
+
+/* ══════════════════════════════════════════════════════════════════
+   GLOW DEL DRAWER — cada halo del COLOR REAL de su icono
+   ══════════════════════════════════════════════════════════════════
+   Dos problemas resueltos aquí:
+
+   1) RECORTE. El GtkRevealer que envuelve a los hijos del drawer los recorta
+      a su asignación: los halos anchos (14–26px) se salían de la caja del
+      icono y quedaban cortados — por eso el cajón se veía plano. Todos los
+      halos pasan a ser COMPACTOS E INTENSOS (3/6/9px, alfa alto), que caben
+      dentro de la celda y sobreviven al recorte.
+
+   2) COLOR. El glow era ÁMBAR FIJO para todos, así que el bluetooth cian, el
+      volumen silenciado o la batería cargando brillaban en ámbar aunque su
+      tinta fuera otra. Ahora cada estado lleva su halo del mismo tono que su
+      color, y los módulos dinámicos (temp, batería, red, volumen, bluetooth,
+      notificaciones) cambian de halo AL CAMBIAR DE ESTADO.
+
+   Las reglas de estado (1 id + 1 clase) ganan a las de base (1 id), así que
+   el halo sigue al estado sin necesidad de !important.               */
+
+/* ── Base ámbar (@fg) — reposo de los módulos sin color propio ────── */
+#custom-tray-toggle,
+#network,
+#pulseaudio,
+#custom-swaync {
+	text-shadow:
+		0 0 3px rgba(212, 167, 74, 1),
+		0 0 6px rgba(212, 167, 74, 0.75),
+		0 0 9px rgba(212, 167, 74, 0.45);
+}
+
+/* ── Amarillo (@state-warn) — memoria ─────────────────────────────────
+   Mismo halo EXACTO que #cpu: ambos dibujan barras de bloque, así que deben
+   brillar igual. (No lleva el halo de 3 capas de los iconos: los caracteres
+   de bloque tienen mucha más tinta que un glifo y el halo se acumularía sobre
+   sí mismo hasta fundir las barras en una mancha.) */
+#custom-memory {
+	text-shadow:
+		0 0 3px rgba(253, 215, 0, 0.9),
+		0 0 10px rgba(253, 215, 0, 0.45);
+}
+
+/* ── Temperatura — el halo sube de temperatura con el icono ───────── */
+#custom-temp.cool { text-shadow: 0 0 3px rgba(168, 153, 132, 0.75), 0 0 6px rgba(168, 153, 132, 0.35); }
+#custom-temp.mild { text-shadow: 0 0 3px rgba(212, 167, 74, 1), 0 0 6px rgba(212, 167, 74, 0.75), 0 0 9px rgba(212, 167, 74, 0.45); }
+#custom-temp.warm { text-shadow: 0 0 3px rgba(253, 215, 0, 1), 0 0 6px rgba(253, 215, 0, 0.75), 0 0 9px rgba(253, 215, 0, 0.45); }
+#custom-temp.hot  { text-shadow: 0 0 3px rgba(254, 128, 25, 1), 0 0 6px rgba(254, 128, 25, 0.80), 0 0 10px rgba(254, 128, 25, 0.50); }
+#custom-temp.critical { text-shadow: 0 0 3px rgba(251, 73, 52, 1), 0 0 7px rgba(251, 73, 52, 0.85), 0 0 11px rgba(251, 73, 52, 0.55); }
+
+/* ── Batería — nominal ámbar, aviso naranja, crítica roja, carga verde */
+#custom-battery { text-shadow: 0 0 3px rgba(212, 167, 74, 1), 0 0 6px rgba(212, 167, 74, 0.75), 0 0 9px rgba(212, 167, 74, 0.45); }
+#custom-battery.warning  { text-shadow: 0 0 3px rgba(254, 128, 25, 1), 0 0 6px rgba(254, 128, 25, 0.80), 0 0 10px rgba(254, 128, 25, 0.50); }
+#custom-battery.critical { text-shadow: 0 0 3px rgba(251, 73, 52, 1), 0 0 7px rgba(251, 73, 52, 0.85), 0 0 11px rgba(251, 73, 52, 0.55); }
+#custom-battery.charging { text-shadow: 0 0 3px rgba(142, 192, 124, 1), 0 0 6px rgba(142, 192, 124, 0.80), 0 0 10px rgba(142, 192, 124, 0.50); }
+
+/* ── Bluetooth — azul en reposo, verde conectado, sin halo si apagado */
+#bluetooth { text-shadow: 0 0 3px rgba(131, 165, 152, 1), 0 0 6px rgba(131, 165, 152, 0.75), 0 0 9px rgba(131, 165, 152, 0.45); }
+#bluetooth.connected { text-shadow: 0 0 3px rgba(142, 192, 124, 1), 0 0 6px rgba(142, 192, 124, 0.80), 0 0 10px rgba(142, 192, 124, 0.50); }
+#bluetooth.disabled  { text-shadow: none; }
+
+/* ── Red / volumen apagados — halo gris (@muted), no ámbar ────────── */
+#network.disconnected,
+#pulseaudio.muted {
+	text-shadow:
+		0 0 3px rgba(168, 153, 132, 0.75),
+		0 0 6px rgba(168, 153, 132, 0.35);
+}
+
+/* ── Notificaciones — dorado si hay avisos, gris en no-molestar ───── */
+#custom-swaync.notification,
+#custom-swaync.inhibited-notification {
+	text-shadow:
+		0 0 3px rgba(255, 215, 0, 1),
+		0 0 7px rgba(255, 215, 0, 0.85),
+		0 0 11px rgba(255, 215, 0, 0.55);
+}
+/* .none lleva su propia regla con clase, que gana a la base de arriba: hay
+   que recompactarle el halo aquí o seguiría con el ancho que el revealer corta. */
+#custom-swaync.none,
+#custom-swaync.inhibited-none {
+	text-shadow:
+		0 0 3px rgba(212, 167, 74, 1),
+		0 0 6px rgba(212, 167, 74, 0.75),
+		0 0 9px rgba(212, 167, 74, 0.45);
+}
+#custom-swaync.dnd-notification,
+#custom-swaync.dnd-none,
+#custom-swaync.dnd-inhibited-notification,
+#custom-swaync.dnd-inhibited-none {
+	text-shadow:
+		0 0 3px rgba(168, 153, 132, 0.60),
+		0 0 6px rgba(168, 153, 132, 0.25);
+}
+
+/* ── Asa: al pasar el ratón pasa a dorado, y su halo con ella ─────── */
+#custom-tray-toggle:hover {
+	color: @accent-gold;
+	opacity: 1;
+	text-shadow:
+		0 0 3px rgba(255, 215, 0, 1),
+		0 0 7px rgba(255, 215, 0, 0.85),
+		0 0 11px rgba(255, 215, 0, 0.55);
 }

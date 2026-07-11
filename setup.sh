@@ -48,11 +48,15 @@ if [[ "$(realpath "$REPO_DIR")" != "$(realpath "$WAYBAR_DIR" 2>/dev/null)" ]]; t
     lnk "$REPO_DIR/scripts"      "$WAYBAR_DIR/scripts"
     lnk "$REPO_DIR/assets"       "$WAYBAR_DIR/assets"
     lnk "$REPO_DIR/config.jsonc" "$WAYBAR_DIR/config.jsonc"
-    echo "Generating style.css..."
-    tmp=$(mktemp)
-    sed "s|/home/[^/]*/|$HOME/|g" "$REPO_DIR/style.css" > "$tmp"
-    mv "$tmp" "$WAYBAR_DIR/style.css"
-    echo "  → $WAYBAR_DIR/style.css"
+    echo "Generating style.css + colors.css..."
+    # style.css @imports colors.css; both are generated (not symlinked) so the
+    # sed pass can rewrite the hardcoded home path in the pomodoro escudo url.
+    for css in colors.css style.css; do
+        tmp=$(mktemp)
+        sed "s|/home/[^/]*/|$HOME/|g" "$REPO_DIR/$css" > "$tmp"
+        mv "$tmp" "$WAYBAR_DIR/$css"
+        echo "  → $WAYBAR_DIR/$css"
+    done
 else
     echo "  (repo is ~/.config/waybar/ — skipping symlinks and style.css regeneration)"
 fi
