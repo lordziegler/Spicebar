@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Mentat — canticulum: MPRIS cuando hay música, invisible cuando no
 
-PLAY_ICON="<span font='Symbols Nerd Font 14'></span>"
-PAUS_ICON="<span font='Symbols Nerd Font 14'></span>"
+PLAY_ICON="<span font='JetBrainsMonoNL Nerd Font Propo 14'></span>"
+PAUS_ICON="<span font='JetBrainsMonoNL Nerd Font Propo 14'></span>"
 
 MODE=$(cat "$HOME/.local/state/waybar/mentat-mode" 2>/dev/null || echo "expanded")
 STATUS=$(playerctl --ignore-player=kdeconnect status 2>/dev/null || echo "Stopped")

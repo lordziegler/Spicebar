@@ -1,48 +1,61 @@
 {
+	// ══════════════════════════════════════════════════════════════════
+	//  SPICEBAR · PONS IMPERATORIS
+	//  Barra PLANA (sin islas), estilo v1. Drawer de sistema con asa (≡);
+	//  CPU siempre visible fuera del drawer. github conservado.
+	//  Iconos como escapes \uXXXX (evita glifos PUA corruptos).
+	//  Compositor: niri (niri/workspaces nativo).
+	// ══════════════════════════════════════════════════════════════════
 	"layer": "top",
 	"position": "top",
 	"mod": "dock",
-	"height": 30,
+	"height": 33,
 	"exclusive": true,
 	"passthrough": false,
 	"gtk-layer-shell": true,
 	"margin": "0px 0px 0px 0px",
 
-	"modules-left": ["custom/pomodoro", "custom/otium", "custom/mentat", "custom/temp", "custom/memory"],
+	// ── Disposición (plana) ───────────────────────────────────────────
+	//  Izquierda : escudo(pomodoro) · officium · canticulum
+	//  Centro    : workspaces planetarios
+	//  Derecha   : github · cpu · [drawer sistema] · reloj · power
+	"modules-left":   ["custom/pomodoro", "custom/otium", "custom/mentat"],
 	"modules-center": ["niri/workspaces"],
-	"modules-right": [
-		"cpu",
-		"network",
-		"bluetooth",
-		"pulseaudio",
-		"custom/swaync",
-		"custom/battery",
-		"clock",
-		"custom/power"
-	],
+	"modules-right":  ["custom/github", "cpu", "group/vitals", "clock", "custom/power"],
 
-	// ── Memory bars ───────────────────────────────────────────────────
-	"custom/memory": {
-		"exec":        "~/.config/waybar/scripts/memory.sh",
-		"return-type": "json",
-		"interval":    5,
-		"signal":      12,
-		"tooltip":     true,
-		"on-click":    "~/.config/waybar/scripts/memory.sh toggle"
+	// ── GROUP · vitals (DRAWER — subyacente) ──────────────────────────
+	//  El primer módulo (custom/tray-toggle) queda visible como asa;
+	//  el resto se despliega al pasar el ratón. Nativo, sin hacks.
+	"group/vitals": {
+		"orientation": "horizontal",
+		"drawer": {
+			"transition-duration": 350,
+			"transition-left-to-right": false,
+			"children-class": "vital",
+			// Se despliega al pasar el ratón por el asa (≡).
+			"click-to-reveal": false
+		},
+		"modules": [
+			"custom/tray-toggle",
+			"custom/memory",
+			"custom/temp",
+			"network",
+			"bluetooth",
+			"pulseaudio",
+			"custom/swaync",
+			"custom/battery"
+		]
 	},
 
-	// ── CPU temperature ───────────────────────────────────────────────
-	"custom/temp": {
-		"exec":        "~/.config/waybar/scripts/temp.sh",
-		"return-type": "json",
-		"interval":    5,
-		"signal":      11,
-		"escape":      false,
-		"tooltip":     true,
-		"on-click":    "~/.config/waybar/scripts/temp.sh toggle"
+	// ── Asa del drawer ────────────────────────────────────────────────
+	"custom/tray-toggle": {
+		"format": "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
+		// Sin tooltip: el drawer ya se explica solo al desplegarse, y el
+		// bocadillo tapaba la barra.
+		"tooltip": false
 	},
 
-	// ── Pomodoro ──────────────────────────────────────────────────────
+	// ── Pomodoro (escudo de armas) ────────────────────────────────────
 	"custom/pomodoro": {
 		"exec":        "~/.config/waybar/scripts/pomodoro.sh status",
 		"return-type": "json",
@@ -54,7 +67,7 @@
 		"on-click-middle": "~/.config/waybar/scripts/pomodoro.sh skip"
 	},
 
-	// ── Otium — vault/task display independiente ─────────────────────
+	// ── Otium — officium ♁ + tarea del vault ──────────────────────────
 	"custom/otium": {
 		"exec":            "~/.config/waybar/scripts/otium.sh",
 		"return-type":     "json",
@@ -66,7 +79,7 @@
 		"on-click-right":  "~/.config/waybar/scripts/weather-open.sh"
 	},
 
-	// ── Mentat — solo canticulum (música activa) ──────────────────────
+	// ── Mentat — canticulum (MPRIS) ───────────────────────────────────
 	"custom/mentat": {
 		"exec":            "~/.config/waybar/scripts/mentat.sh",
 		"return-type":     "json",
@@ -80,26 +93,89 @@
 		"on-scroll-up":    "playerctl --ignore-player=kdeconnect next",
 		"on-scroll-down":  "playerctl --ignore-player=kdeconnect previous"
 	},
-	// ── Workspaces (Niri) ──────────────────────────────────────────────
+
+	// ── Workspaces (Niri) — planetas orbitando ────────────────────────
 	"niri/workspaces": {
 		"format": "{icon}",
 		"format-icons": {
-			"1":  "☉",
-			"2":  "☽",
-			"3":  "♂",
-			"4":  "☿",
-			"5":  "♃",
-			"6":  "♄",
-			"7":  "♅",
-			"8":  "♆",
-			"9":  "♇",
-			"10": "⊕"
+			"1":  "☉",  "2":  "☽",  "3":  "♂",  "4":  "☿",  "5":  "♃",
+			"6":  "♄",  "7":  "♅",  "8":  "♆",  "9":  "♇",  "10": "⊕"
 		}
 	},
 
-	// ── SwayNC ────────────────────────────────────────────────────────
+	// ── GitHub — racha de contribuciones (mini sparkline) ─────────────
+	"custom/github": {
+		"exec":            "~/.config/waybar/scripts/github-graph.sh",
+		"return-type":     "json",
+		"interval":        1800,
+		"signal":          14,
+		"escape":          false,
+		"tooltip":         true,
+		"on-click":        "~/.config/waybar/scripts/mentat-github.sh"
+	},
+
+	// ── CPU (SIEMPRE visible, fuera del drawer) ───────────────────────
+	"cpu": {
+		"interval": 10,
+		"format":     "{icon0}{icon1}{icon2}{icon3}",
+		"format-alt": "<span font='JetBrainsMonoNL Nerd Font Propo 14'></span> {usage}%",
+		"format-icons": ["▏", "▎", "▍", "▌", "▋", "▊", "█", "█"],
+		"tooltip": true,
+		"tooltip-format": "CPU: {usage}%"
+	},
+
+	// ── Sistema (dentro del drawer) ───────────────────────────────────
+	"custom/memory": {
+		"exec":        "~/.config/waybar/scripts/memory.sh",
+		"return-type": "json",
+		"interval":    5,
+		"signal":      12,
+		"tooltip":     true,
+		"on-click":    "~/.config/waybar/scripts/memory.sh toggle"
+	},
+
+	"custom/temp": {
+		"exec":        "~/.config/waybar/scripts/temp.sh",
+		"return-type": "json",
+		"interval":    5,
+		"signal":      11,
+		"escape":      false,
+		"tooltip":     true,
+		"on-click":    "~/.config/waybar/scripts/temp.sh toggle"
+	},
+
+	"network": {
+		"format-wifi":         "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
+		"format-ethernet":     "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
+		"format-disconnected": "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
+		"tooltip-format-wifi": "{essid}  {signalStrength}%",
+		"tooltip-format-ethernet": "{ifname} · {ipaddr}",
+		"tooltip-format-disconnected": "No connection",
+		"interface": "wlan0",
+		"on-click": "nm-connection-editor"
+	},
+
+	"bluetooth": {
+		"format":           "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
+		"format-connected": "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span> {device_alias}",
+		"format-disabled":  "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
+		"tooltip-format": "{controller_alias} {controller_address}\n{num_connections} connected",
+		"tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
+		"tooltip-format-enumerate-connected": "  {device_alias}\t{device_address}",
+		"on-click": "blueman-manager"
+	},
+
+	"pulseaudio": {
+		"format":         "<span font='JetBrainsMonoNL Nerd Font Propo 16' rise='400'>{icon}</span>",
+		"format-muted":   "<span font='JetBrainsMonoNL Nerd Font Propo 16' rise='400'></span>",
+		"format-icons": { "default": ["", "", ""] },
+		"scroll-step": 5,
+		"on-click": "pavucontrol",
+		"tooltip": false
+	},
+
 	"custom/swaync": {
-		"format": "<span font='Symbols Nerd Font 18'>{text}</span>",
+		"format": "<span font='JetBrainsMonoNL Nerd Font Propo 18'>{text}</span>",
 		"exec-if": "which swaync-client",
 		"exec":    "~/.config/waybar/scripts/swaync.sh",
 		"return-type": "json",
@@ -110,52 +186,6 @@
 		"on-click-right": "swaync-client -d -sw"
 	},
 
-	// ── Network ───────────────────────────────────────────────────────
-	"network": {
-		"format-wifi":         "<span font='Symbols Nerd Font 16'></span>",
-		"format-ethernet":     "<span font='Symbols Nerd Font 16'></span>",
-		"format-disconnected": "<span font='Symbols Nerd Font 16'></span>",
-		"tooltip-format-wifi": "{essid}  {signalStrength}%",
-		"tooltip-format-ethernet": "{ifname} · {ipaddr}",
-		"tooltip-format-disconnected": "No connection",
-		"interface": "wlan0",
-		"on-click": "nm-connection-editor"
-	},
-
-	// ── Bluetooth ──────────────────────────────────────────────────────
-	"bluetooth": {
-		"format":           "<span font='Symbols Nerd Font 16'></span>",
-		"format-connected": "<span font='Symbols Nerd Font 16'></span> {device_alias}",
-		"format-disabled":  "<span font='Symbols Nerd Font 16'></span>",
-		"tooltip-format": "{controller_alias} {controller_address}\n{num_connections} connected",
-		"tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
-		"tooltip-format-enumerate-connected": "  {device_alias}\t{device_address}",
-		"on-click": "blueman-manager"
-	},
-
-	// ── Pulseaudio ─────────────────────────────────────────────────────
-	"pulseaudio": {
-		"format":         "<span font='Symbols Nerd Font 16' rise='1500'>{icon}</span>",
-		"format-muted":   "<span font='Symbols Nerd Font 16' rise='1500'></span>",
-		"format-icons": {
-			"default": ["", "", ""]
-		},
-		"scroll-step": 5,
-		"on-click": "pavucontrol",
-		"tooltip": false
-	},
-
-	// ── CPU ────────────────────────────────────────────────────────────
-	"cpu": {
-		"interval": 10,
-		"format":     "{icon0}{icon1}{icon2}{icon3}",
-		"format-alt": "<span font='Symbols Nerd Font 14'></span> {usage}%",
-		"format-icons": ["▏", "▎", "▍", "▌", "▋", "▊", "█", "█"],
-		"tooltip": true,
-		"tooltip-format": "CPU: {usage}%"
-	},
-
-	// ── Battery ────────────────────────────────────────────────────────
 	"custom/battery": {
 		"exec":        "~/.config/waybar/scripts/battery.sh",
 		"return-type": "json",
@@ -164,7 +194,8 @@
 		"escape":      false,
 		"on-click":    "~/.config/waybar/scripts/battery.sh toggle"
 	},
-	// ── Clock ─────────────────────────────────────────────────────────
+
+	// ── Reloj — der-clic abre calcurse ────────────────────────────────
 	"clock": {
 		"format":          "{:%H:%M}",
 		"format-alt":      "{:%H:%M  %a %d %b %Y}",
@@ -172,10 +203,9 @@
 		"on-click-right":  "~/.config/waybar/scripts/calcurse-open.sh"
 	},
 
-
 	// ── Power ─────────────────────────────────────────────────────────
 	"custom/power": {
-		"format": "<span font='Symbols Nerd Font 13'></span>",
+		"format": "<span font='JetBrainsMonoNL Nerd Font Propo 13'></span>",
 		"tooltip": false,
 		"on-click": "wlogout -p layer-shell"
 	}

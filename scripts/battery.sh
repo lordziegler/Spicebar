@@ -47,7 +47,7 @@ elif (( CAP >= 15 )); then RAW="$I1"
 else RAW="$I0"
 fi
 
-ICON="<span font='Symbols Nerd Font 16'>$RAW</span>"
+ICON="<span font='JetBrainsMonoNL Nerd Font Propo 16'>$RAW</span>"
 
 [[ -f "$STATE" ]] && TEXT="$ICON ${CAP}%" || TEXT="$ICON"
 
