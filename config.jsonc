@@ -152,7 +152,11 @@
 		"tooltip-format-ethernet": "{ifname} · {ipaddr}",
 		"tooltip-format-disconnected": "No connection",
 		"interface": "wlan0",
-		"on-click": "nm-connection-editor"
+		// El script elige el gestor según qué backend esté activo (iwd → impala,
+		// NetworkManager → nm-connection-editor). Antes esto apuntaba fijo a
+		// `impala`, y al desinstalarlo el botón quedó muerto.
+		// El módulo lee del kernel (netlink), así que funciona con cualquier backend.
+		"on-click": "~/.config/waybar/scripts/wifi-menu.sh"
 	},
 
 	"bluetooth": {
@@ -170,7 +174,8 @@
 		"format-muted":   "<span font='JetBrainsMonoNL Nerd Font Propo 16' rise='400'></span>",
 		"format-icons": { "default": ["", "", ""] },
 		"scroll-step": 5,
-		"on-click": "pavucontrol",
+		"on-click":       "pwvucontrol",
+		"on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
 		"tooltip": false
 	},
 
