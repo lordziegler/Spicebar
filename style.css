@@ -366,7 +366,12 @@ tooltip label {
 }
 
 #custom-pomodoro.idle {
-	background-image: url("/home/ziegler/.config/waybar/assets/ziegler.png");
+	/* Ruta RELATIVA: GTK resuelve url() respecto al propio fichero CSS.
+	   Antes iba absoluta (/home/ziegler/...), y por eso setup.sh tenía que
+	   GENERAR este CSS con un sed en vez de enlazarlo — lo que rompía la regla
+	   del repo ("editar la config viva ES editar el repo") y hacía el estilo
+	   intransportable a otra máquina o usuario. */
+	background-image: url("assets/ziegler.png");
 	background-color: transparent;
 	background-size: contain;
 	background-repeat: no-repeat;
