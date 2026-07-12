@@ -4,7 +4,7 @@
 # relying on calcurse's internal color scheme (which hardcodes red for dark mode).
 
 DATA_DIR="$HOME/.local/share/calcurse-outlook"
-VAULT="$HOME/Documents/Cerebrum_Secundum"
+VAULT="$HOME/Documents/Cerebrum-Secundum"
 
 if ! command -v calcurse &>/dev/null; then
     notify-send -u critical "Calendar" "calcurse not found — install with: sudo pacman -S calcurse"

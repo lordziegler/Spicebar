@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Otium — vault/task display independiente de canticulum
 
-VAULT="$HOME/Documents/Cerebrum_Secundum"
+VAULT="$HOME/Documents/Cerebrum-Secundum"
 ICON="♁"
 
 RAW=$(grep -r --include="*.md" -h \

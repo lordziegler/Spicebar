@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Watches the Obsidian vault for .md changes and signals waybar to refresh otium.
-VAULT="$HOME/Documents/Cerebrum_Secundum"
+VAULT="$HOME/Documents/Cerebrum-Secundum"
 
 inotifywait -q -m -r -e modify,create,delete,moved_to \
     --include '\.md$' \

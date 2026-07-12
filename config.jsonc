@@ -74,7 +74,7 @@
 		"interval":        3,
 		"escape":          false,
 		"tooltip":         true,
-		"on-click":        "obsidian 'obsidian://open?vault=Cerebrum_Secundum'",
+		"on-click":        "obsidian 'obsidian://open?vault=Cerebrum-Secundum'",
 		"on-click-middle": "~/.config/waybar/scripts/mentat-github.sh",
 		"on-click-right":  "~/.config/waybar/scripts/weather-open.sh"
 	},
