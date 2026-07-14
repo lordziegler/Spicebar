@@ -14,11 +14,16 @@ APP_ID="specula-float"
 REPO="$HOME/Projects/Specula-Imperii"
 
 # Already on screen? Then this click means "put it away".
-open_id="$(niri msg --json windows |
-	jq -r --arg app "$APP_ID" 'first(.[] | select(.app_id == $app) | .id) // empty')"
+#
+# By its pid, not with `niri msg action close-window`: that sends the compositor's
+# polite close *request*, and a terminal running a full-screen TUI does not always
+# take it — the window stayed open and a second click opened a third. A TERM to the
+# terminal itself is the thing that actually ends.
+open_pid="$(niri msg --json windows |
+	jq -r --arg app "$APP_ID" 'first(.[] | select(.app_id == $app) | .pid) // empty')"
 
-if [[ -n "$open_id" ]]; then
-	niri msg action close-window --id "$open_id"
+if [[ -n "$open_pid" ]]; then
+	kill "$open_pid"
 	exit 0
 fi
 
