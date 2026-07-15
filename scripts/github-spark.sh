@@ -10,9 +10,9 @@
 set -euo pipefail
 
 USER="lordziegler"
-GLYPH_FONT="JetBrainsMonoNL Nerd Font Propo 13"
+GLYPH_FONT="JetBrainsMonoNL Nerd Font Propo 10"
 ICON=$(printf '') # nf-fa-github
-WINDOW=21               # días recientes en el sparkline de la barra
+WINDOW=7                # días recientes en el sparkline de la barra (última semana)
 
 # Ante cualquier fallo, un módulo vacío (class oculta) en vez de un dato falso.
 fail() { printf '{"text":"","class":"github-off","tooltip":"GitHub: %s"}\n' "$1"; exit 0; }
