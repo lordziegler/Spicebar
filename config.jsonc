@@ -21,7 +21,8 @@
 	//  Derecha   : github · cpu · [drawer sistema] · reloj · power
 	"modules-left":   ["custom/pomodoro", "custom/otium", "custom/mentat"],
 	"modules-center": ["niri/workspaces"],
-	"modules-right":  ["custom/github", "cpu", "group/vitals", "clock", "custom/power"],
+	// "custom/github" retirado de la barra (definición y scripts conservados abajo).
+	"modules-right":  ["cpu", "group/vitals", "clock", "custom/power"],
 
 	// ── GROUP · vitals (DRAWER — subyacente) ──────────────────────────
 	//  El primer módulo (custom/tray-toggle) queda visible como asa;
