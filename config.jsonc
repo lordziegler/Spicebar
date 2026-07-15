@@ -105,8 +105,10 @@
 	},
 
 	// ── GitHub — racha de contribuciones (mini sparkline) ─────────────
+	// exec = github-spark.sh (JSON, no bloquea). El calendario completo lo
+	// abre el click izquierdo con github-graph.sh dentro de kitty.
 	"custom/github": {
-		"exec":            "~/.config/waybar/scripts/github-graph.sh",
+		"exec":            "~/.config/waybar/scripts/github-spark.sh",
 		"return-type":     "json",
 		"interval":        1800,
 		"signal":          14,
