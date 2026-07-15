@@ -38,13 +38,13 @@ if [[ -z "$BINARY" ]]; then
 	exit 1
 fi
 
-# The dashboard paints its own palette (amber on warm obsidian) — Kitty only has
-# to get out of the way and give it the columns. It wants 137 at a minimum; at
-# font_size 10 the 1400px window in the niri rule is good for about 170.
+# Kitty only has to get out of the way and give the dashboard its columns. It
+# wants 137 at a minimum; at font_size 9 the 1180px window in the niri rule holds
+# about 160. No background override: the dashboard now defers to the terminal, so
+# Kitty's own background_opacity (the frosted glass) shows through the whole thing.
 exec kitty \
 	--app-id "$APP_ID" \
 	--title "Specula Imperii" \
-	--override font_size=10 \
-	--override background=#070502 \
+	--override font_size=9 \
 	--override cursor_shape=block \
 	"$BINARY"

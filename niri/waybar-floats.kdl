@@ -24,7 +24,19 @@ window-rule {
     default-window-height { fixed 560; }
 }
 
-// Network manager (click en icono wifi)
+// Red — el clic del icono wifi va a scripts/wifi-menu.sh, que abre impala (si
+// manda iwd) o nm-connection-editor (si manda NetworkManager).
+// Las DOS reglas deben existir: el backend puede cambiar, y el rollback a
+// NetworkManager tiene que seguir dando una ventana flotante decente.
+
+// impala: TUI de wifi, dentro de kitty --class=impala-tui. Requiere iwd.
+window-rule {
+    match app-id="impala-tui"
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 600; }
+}
+
 window-rule {
     match app-id="nm-connection-editor"
     open-floating true
@@ -38,4 +50,13 @@ window-rule {
     open-floating true
     default-column-width { fixed 550; }
     default-window-height { fixed 400; }
+}
+
+// Specula Imperii — dashboard de productividad (middle-click en otium).
+// Flotante, centrada y más pequeña que la pantalla; a font_size 9, 1180 px ≈ 160 col.
+window-rule {
+    match app-id="specula-float"
+    open-floating true
+    default-column-width { fixed 1180; }
+    default-window-height { fixed 640; }
 }
