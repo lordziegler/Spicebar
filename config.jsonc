@@ -68,6 +68,7 @@
 	},
 
 	// ── Otium — officium ♁ + tarea del vault ──────────────────────────
+	// Centro: Specula Imperii (antes el calendario de commits, que CODEX ya dibuja).
 	"custom/otium": {
 		"exec":            "~/.config/waybar/scripts/otium.sh",
 		"return-type":     "json",
@@ -75,7 +76,7 @@
 		"escape":          false,
 		"tooltip":         true,
 		"on-click":        "obsidian 'obsidian://open?vault=Cerebrum-Secundum'",
-		"on-click-middle": "~/.config/waybar/scripts/mentat-github.sh",
+		"on-click-middle": "~/.config/waybar/scripts/specula.sh",
 		"on-click-right":  "~/.config/waybar/scripts/weather-open.sh"
 	},
 
@@ -104,7 +105,6 @@
 	},
 
 	// ── GitHub — racha de contribuciones (mini sparkline) ─────────────
-	// Centro: Specula Imperii, que dibuja este mismo calendario en CODEX.
 	"custom/github": {
 		"exec":            "~/.config/waybar/scripts/github-graph.sh",
 		"return-type":     "json",
@@ -112,8 +112,7 @@
 		"signal":          14,
 		"escape":          false,
 		"tooltip":         true,
-		"on-click":        "~/.config/waybar/scripts/mentat-github.sh",
-		"on-click-middle": "~/.config/waybar/scripts/specula.sh"
+		"on-click":        "~/.config/waybar/scripts/mentat-github.sh"
 	},
 
 	// ── CPU (SIEMPRE visible, fuera del drawer) ───────────────────────
