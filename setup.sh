@@ -65,6 +65,9 @@ PKGS_MODULES=(
     kitty                  # ventanas flotantes (calcurse, TUIs)
     inotify-tools          # vault-watch.sh — inotifywait. Sin esto el servicio
                            #                  arranca y muere en 200ms sin vigilar nada.
+    power-profiles-daemon  # battery left-click — power-menu.sh (powerprofilesctl)
+    fzf                    # battery left-click — selector TUI de power-menu.sh
+    upower                 # battery left-click — cabecera de estado en power-menu.sh
 )
 
 # Módulo network → scripts/wifi-menu.sh, que elige gestor según el backend ACTIVO.
@@ -270,7 +273,8 @@ fi
 # Cada binario que invocan los scripts y los on-click.
 MISSING_BIN=()
 for c in waybar playerctl jq gh curl swaync-client blueman-manager \
-         pwvucontrol wpctl wlogout notify-send kitty inotifywait; do
+         pwvucontrol wpctl wlogout notify-send kitty inotifywait \
+         powerprofilesctl fzf upower; do
     command -v "$c" &>/dev/null || MISSING_BIN+=("$c")
 done
 if (( ${#MISSING_BIN[@]} )); then

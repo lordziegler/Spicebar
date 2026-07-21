@@ -64,7 +64,7 @@ Icons use layered `text-shadow` to simulate stroke weight — the symbols are in
 | Bluetooth | `blueman-manager` on click |
 | PulseAudio | Volume icon; `pavucontrol` on click |
 | SwayNC | Notification count + DND toggle |
-| Battery | Icon-only with warning/critical blink |
+| Battery | Icon-only with warning/critical blink. Left-click opens the power profile manager (floating TUI); right-click toggles percentage display |
 | Clock | `HH:MM`; left-click for full date; **right-click opens calendar** |
 | Power | `wlogout` layer-shell |
 
@@ -90,6 +90,16 @@ Music module. Only visible when a player is active. Shows play/pause icon + arti
 Right-click the clock to open `calcurse` in a floating Kitty terminal. Events are synced from Outlook.com every 30 minutes via a systemd user timer — no persistent daemon. Open tasks from the Obsidian vault (`02-Areae/Vita/`) are written to the calcurse todo list on every open.
 
 Colors are applied as Kitty overrides using the Imperator palette — no calcurse color config needed.
+
+### Power — power-profiles-daemon
+
+Left-click the battery icon to open a floating Kitty window with a small `fzf`-based
+TUI: a header with current charge/status/time-remaining (via `upower`), and a picker
+for the three `power-profiles-daemon` profiles (Performance / Balanced / Power Saver),
+marking the active one. Selecting a different profile applies it immediately via
+`powerprofilesctl set` and fires a notification.
+
+Right-click keeps the previous behavior — toggling the battery percentage in the bar.
 
 ---
 
@@ -134,6 +144,9 @@ bash setup.sh
 | `vdirsyncer` | iCal sync from Outlook.com (calendar feature) |
 | `gh` | GitHub CLI — contributions graph |
 | `curl` | Weather dashboard via wttr.in |
+| `power-profiles-daemon` | Power profile switching (battery left-click) |
+| `fzf` | TUI picker for the power profile manager |
+| `upower` | Battery status (percentage, state, time remaining) |
 | `kitty` | Terminal for floating windows |
 | `obsidian` | Vault — task display in otium (optional, AUR) |
 | JetBrains Mono Nerd Font | Primary font |

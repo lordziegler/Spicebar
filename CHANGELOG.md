@@ -1,5 +1,20 @@
 # Waybar Retrofuturista — Changelog
 
+## [sin versión] — 2026-07-20
+
+### Battery: gestor de perfiles de energía en left-click
+- **Nuevo** `custom/battery.on-click` → `power-open.sh`: abre una ventana Kitty
+  flotante (`app-id power-float`) con `power-menu.sh`, un selector `fzf` de los
+  tres perfiles de `power-profiles-daemon` (Performance / Balanced / Power
+  Saver), con cabecera de estado de batería (`upower`: % / estado / tiempo
+  restante). Marca el perfil activo y aplica el elegido con
+  `powerprofilesctl set`.
+- El toggle de porcentaje que antes vivía en left-click (`battery.sh toggle`)
+  pasa a **right-click**.
+- **niri**: nueva regla flotante `power-float` (400×230, compacta: solo 3
+  opciones + header). Añadida a `niri/waybar-floats.kdl` y a las reglas vivas.
+- **Dependencias nuevas**: `power-profiles-daemon`, `fzf`, `upower`.
+
 ## [prototipo-v1] — 2026-07-10
 
 Refactor de Spicebar hacia el prototipo **retrofuturista mejorado**

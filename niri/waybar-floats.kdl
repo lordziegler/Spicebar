@@ -60,3 +60,12 @@ window-rule {
     default-column-width { fixed 1180; }
     default-window-height { fixed 640; }
 }
+
+// Power — selector de perfiles de power-profiles-daemon + estado de batería
+// (left-click en el icono de batería). Ventana pequeña: solo 3 opciones + header.
+window-rule {
+    match app-id="power-float"
+    open-floating true
+    default-column-width { fixed 400; }
+    default-window-height { fixed 230; }
+}

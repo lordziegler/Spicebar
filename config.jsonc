@@ -201,7 +201,8 @@
 		"interval":    30,
 		"signal":      10,
 		"escape":      false,
-		"on-click":    "~/.config/waybar/scripts/battery.sh toggle"
+		"on-click":       "~/.config/waybar/scripts/power-open.sh",
+		"on-click-right": "~/.config/waybar/scripts/battery.sh toggle"
 	},
 
 	// ── Reloj — der-clic abre calcurse ────────────────────────────────
