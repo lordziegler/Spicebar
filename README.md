@@ -74,7 +74,7 @@ A permanent module between the pomodoro and the music player. Reads the first op
 
 - **Left click** — open Obsidian vault
 - **Middle click** — GitHub contributions graph (floating Kitty window)
-- **Right click** — weather dashboard via wttr.in (floating Kitty window, auto-detects location by IP)
+- **Right click** — Imperator // Vigil dashboard (floating Kitty window: a multi-lote agroclimatic TUI over live Open-Meteo + NASA POWER data). Add plots on the fly with `a`; toggle a visual multi-city day-planner with `c` (add any city on Earth, rain-probability chart, UV, hourly + weekly outlook); press `?` for an in-app legend
 
 ### Canticulum — MPRIS
 
@@ -143,7 +143,7 @@ bash setup.sh
 | `calcurse` | TUI calendar (calendar feature) |
 | `vdirsyncer` | iCal sync from Outlook.com (calendar feature) |
 | `gh` | GitHub CLI — contributions graph |
-| `curl` | Weather dashboard via wttr.in |
+| `cargo` | Builds the Imperator // Vigil dashboard (right-click on ♁) |
 | `power-profiles-daemon` | Power profile switching (battery left-click) |
 | `fzf` | TUI picker for the power profile manager |
 | `upower` | Battery status (percentage, state, time remaining) |
@@ -197,6 +197,6 @@ The amber palette, the CRT aesthetic, and the planetary motif run through every 
 - [Niri window rules](https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules) — floating window configuration
 - [vdirsyncer docs](https://vdirsyncer.pimutils.org/) — CalDAV/iCal sync daemon
 - [calcurse manual](https://calcurse.org/files/manual.html) — TUI calendar configuration and import format
-- [wttr.in](https://wttr.in/:help) — terminal weather service
+- [Open-Meteo](https://open-meteo.com/) / [NASA POWER](https://power.larc.nasa.gov/) — data sources for the Vigil dashboard
 - [Pango markup](https://docs.gtk.org/Pango/pango_markup.html) — `<span>` font and color control used throughout `config.jsonc`
 - [vdawg-git/space_dots](https://github.com/vdawg-git/space_dots) — waybar dotfiles that inspired this configuration

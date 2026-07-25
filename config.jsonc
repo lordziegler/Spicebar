@@ -78,7 +78,7 @@
 		"tooltip":         true,
 		"on-click":        "obsidian 'obsidian://open?vault=Cerebrum-Secundum'",
 		"on-click-middle": "~/.config/waybar/scripts/specula.sh",
-		"on-click-right":  "~/.config/waybar/scripts/weather-open.sh"
+		"on-click-right":  "~/.config/waybar/scripts/vigil-open.sh"
 	},
 
 	// ── Mentat — canticulum (MPRIS) ───────────────────────────────────

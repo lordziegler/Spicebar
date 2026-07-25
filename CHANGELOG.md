@@ -15,6 +15,21 @@
   opciones + header). Añadida a `niri/waybar-floats.kdl` y a las reglas vivas.
 - **Dependencias nuevas**: `power-profiles-daemon`, `fzf`, `upower`.
 
+## [sin versión] — 2026-07-15
+
+### Otium — officium ♁: nueva dashboard agroclimática en right-click
+- **Reemplazado** el right-click de `custom/otium` (antes `weather-open.sh`,
+  wttr.in) por `vigil-open.sh`: abre **Imperator // Vigil**, una TUI multi-lote
+  sobre datos reales de Open-Meteo + NASA POWER, en ventana flotante Kitty
+  (`app-id vigil-float`, paleta Imperator CRT). El binario vive en
+  `~/Projects/vigil`; el script lo compila en el primer uso.
+- **niri**: regla flotante `weather-float` → `vigil-float` (1080×600, compacta:
+  3 columnas + tendencias). Actualizado el snippet `niri/waybar-floats.kdl` y las
+  reglas vivas.
+- **Eliminados** `scripts/weather.sh` y `scripts/weather-open.sh` (huérfanos).
+- **setup.sh**: dependencia `curl` (solo la usaba `weather.sh`) → `rust` (cargo,
+  para compilar la dashboard); health-check de binarios actualizado.
+
 ## [prototipo-v1] — 2026-07-10
 
 Refactor de Spicebar hacia el prototipo **retrofuturista mejorado**

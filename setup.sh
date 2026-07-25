@@ -53,9 +53,9 @@ PKGS_CORE=(
 # Módulos de la barra. Cada uno anotado con QUIÉN lo usa.
 PKGS_MODULES=(
     playerctl              # custom/mentat  — control MPRIS
-    jq                     # github-graph.sh, weather.sh — parseo JSON
+    jq                     # github-graph.sh — parseo JSON
     github-cli             # custom/github  — racha de contribuciones (gh)
-    curl                   # weather.sh
+    rust                   # vigil-open.sh — compila vigil (cargo)
     swaync                 # custom/swaync  — swaync-client
     blueman                # custom/bluetooth — blueman-manager
     bluez-utils            # custom/bluetooth — bluetoothctl (nombre del dispositivo)
@@ -73,8 +73,12 @@ PKGS_MODULES=(
 
 # Módulo network → scripts/wifi-menu.sh, que elige gestor según el backend ACTIVO.
 # Se instalan los dos clientes para que el clic funcione con iwd o NetworkManager.
+#
+# El backend en sí NO se toca aquí: eso es privilegiado y va aparte, en
+# network/setup-network.sh (y ahí está también el arreglo del driver wifi, que es
+# lo que de verdad rompía el wifi en cada reinicio — ver network/README.md).
 PKGS_NETWORK=(
-    impala                 # si manda iwd
+    impala                 # si manda iwd  ← el backend nativo de impala
     nm-connection-editor   # si manda NetworkManager
 )
 
@@ -273,7 +277,7 @@ fi
 
 # Cada binario que invocan los scripts y los on-click.
 MISSING_BIN=()
-for c in waybar playerctl jq gh curl swaync-client blueman-manager bluetoothctl \
+for c in waybar playerctl jq gh cargo swaync-client blueman-manager bluetoothctl \
          pwvucontrol wpctl wlogout notify-send kitty inotifywait \
          powerprofilesctl fzf upower; do
     command -v "$c" &>/dev/null || MISSING_BIN+=("$c")
@@ -285,13 +289,45 @@ else
     ok "todos los binarios de los módulos presentes"
 fi
 
+# ── El DRIVER wifi, antes que el gestor ───────────────────────────────────
+# Se comprueba primero a propósito. Sin driver no hay wlan0, y sin wlan0 NINGÚN
+# gestor ve radio: iwd, NetworkManager e impala parecen culpables por turnos
+# mientras el fallo real está dos capas más abajo.
+#
+# Un 'blacklist rtw88_8821ce' en modprobe.d dejó este portátil sin wifi tras cada
+# reinicio. Engaña porque 'modprobe' a mano SÍ funciona (el nombre explícito se
+# salta el blacklist), así que el arreglo manual parece confirmar que el culpable
+# era otro. Historia completa en network/README.md.
+#
+# OJO con la forma de comprobarlo: NADA de 'modprobe -c | grep -q'. Es la misma
+# trampa de SIGPIPE + pipefail que está explicada arriba en el chequeo de la
+# fuente — grep -q sale al primer match, modprobe muere con 141 y pipefail lo
+# convierte en fallo, así que la comprobación diría "no hay blacklist"
+# justamente cuando SÍ lo hay. Se captura primero y se filtra con here-string.
+WIFI_MOD=rtw88_8821ce
+if [[ -n "$(lspci -d 10ec:c821 2>/dev/null)" ]]; then    # ¿está la RTL8821CE?
+    MODPROBE_CFG="$(modprobe -c 2>/dev/null || true)"
+    if grep -qE "^blacklist[[:space:]]+${WIFI_MOD}$" <<<"$MODPROBE_CFG"; then
+        err "'blacklist $WIFI_MOD' ACTIVO — al reiniciar te quedarás SIN wlan0"
+        err "  arréglalo:  sudo bash $REPO_DIR/network/setup-network.sh --fix-driver"
+        FAIL=1
+    else
+        ok "driver wifi sin blacklist (sobrevive al reinicio)"
+    fi
+fi
+
 # El clic del icono de wifi necesita el cliente del backend ACTIVO.
+# impala habla SOLO con iwd; si manda NetworkManager, el script abre otra cosa.
 if systemctl is-active --quiet iwd; then
     command -v impala &>/dev/null && ok "red: iwd + impala" \
         || { err "manda iwd pero falta impala"; FAIL=1; }
+    systemctl is-enabled --quiet iwd \
+        || warn "iwd corre pero NO está enabled — tras reiniciar mandaría otro (o nadie)"
 elif systemctl is-active --quiet NetworkManager; then
     command -v nm-connection-editor &>/dev/null && ok "red: NetworkManager + nm-connection-editor" \
         || { err "manda NetworkManager pero falta nm-connection-editor"; FAIL=1; }
+    warn "manda NetworkManager: el icono NO abrirá impala (impala requiere iwd)"
+    warn "  para migrar:  sudo bash $REPO_DIR/network/setup-network.sh"
 else
     warn "ningún gestor de red activo — el clic del icono de wifi no hará nada"
 fi
