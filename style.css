@@ -121,6 +121,7 @@ tooltip label {
 #network,
 #custom-bluetooth,
 #pulseaudio,
+#custom-arca,
 #custom-power {
 	font-size: 16px;
 	color: @fg;
@@ -136,6 +137,7 @@ tooltip label {
 #network        { margin-left: 8px; }
 #pulseaudio     { margin-left: 8px; }
 #custom-battery { margin-left: 8px; }
+#custom-arca    { margin-left: 8px; }
 #clock          { margin-left: 8px; padding-left: 12px; padding-right: 12px; }
 #custom-power   { margin-left: 4px; padding-left: 10px; padding-right: 14px; }
 

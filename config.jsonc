@@ -22,7 +22,7 @@
 	"modules-left":   ["custom/pomodoro", "custom/otium", "custom/mentat"],
 	"modules-center": ["niri/workspaces"],
 	// "custom/github" retirado de la barra (definición y scripts conservados abajo).
-	"modules-right":  ["cpu", "group/vitals", "clock", "custom/power"],
+	"modules-right":  ["cpu", "group/vitals", "custom/arca", "clock", "custom/power"],
 
 	// ── GROUP · vitals (DRAWER — subyacente) ──────────────────────────
 	//  El primer módulo (custom/tray-toggle) queda visible como asa;
@@ -207,6 +207,17 @@
 		"escape":      false,
 		"on-click":       "~/.config/waybar/scripts/power-open.sh",
 		"on-click-right": "~/.config/waybar/scripts/battery.sh toggle"
+	},
+
+	// ── Λrca — cofre (arca) · TUI de finanzas personales ──────────────
+	//  Izq-clic abre arca en un Kitty flotante (arca-float). El binario vive
+	//  en ~/Projects/Λrca; arca-open.sh lo compila en el primer uso. Λ = U+039B
+	//  (glifo normal de la fuente, sin escape ni truco PUA).
+	"custom/arca": {
+		"format": "<span font='JetBrainsMonoNL Nerd Font Propo 15'>Λ</span>",
+		"tooltip": true,
+		"tooltip-format": "Λrca · personal finance",
+		"on-click": "~/.config/waybar/scripts/arca-open.sh"
 	},
 
 	// ── Reloj — der-clic abre calcurse ────────────────────────────────

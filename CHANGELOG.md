@@ -2,6 +2,19 @@
 
 ## [sin versión] — 2026-07-20
 
+### Λrca: lanzador de la TUI de finanzas en la barra
+- **Nuevo** módulo `custom/arca` (sigilo **Λ**, U+039B) en `modules-right`, justo
+  antes del reloj. Izq-clic → `scripts/arca-open.sh`: abre **Λrca** en una ventana
+  Kitty flotante (`app-id arca-float`, paleta Imperator CRT). El binario vive en
+  `~/Projects/Λrca`; el script hace `cd` a la raíz del proyecto (arca lee y
+  **escribe** rutas relativas al cwd) y lo compila en el primer uso.
+- **niri**: nueva regla flotante `arca-float` (1200×720). Añadida solo a
+  `rules.kdl` (Impr-niri), ahora única fuente.
+- **De-duplicación**: eliminado `niri/waybar-floats.kdl` — era una copia de las
+  reglas flotantes que niri nunca cargaba (solo la usaba `setup.sh` como payload
+  a inyectar) y que derivaba de la viva. `setup.sh` 5/6 pasa de *inyectar* a
+  *verificar* la presencia de las reglas; `rules.kdl` de Impr-niri es la fuente.
+
 ### Battery: gestor de perfiles de energía en left-click
 - **Nuevo** `custom/battery.on-click` → `power-open.sh`: abre una ventana Kitty
   flotante (`app-id power-float`) con `power-menu.sh`, un selector `fzf` de los

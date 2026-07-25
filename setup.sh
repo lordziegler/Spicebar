@@ -234,15 +234,16 @@ if [[ "$CHECK_ONLY" == false ]]; then
     # ══════════════════════════════════════════════════════════════════════
     hdr "5/6 · Reglas de ventana de niri"
 
+    # Las reglas flotantes viven en Impr-niri/rules.kdl (única fuente), que se
+    # despliega con el repo de niri. Aquí solo verificamos su presencia — ya no
+    # inyectamos un payload duplicado.
     NIRI_RULES="$HOME/.config/niri/rules.kdl"
     if [[ ! -f "$NIRI_RULES" ]]; then
         warn "no existe ~/.config/niri/rules.kdl — despliega niri primero"
     elif grep -q "calcurse-float" "$NIRI_RULES"; then
         ok "ya presentes"
     else
-        cat "$REPO_DIR/niri/waybar-floats.kdl" >> "$NIRI_RULES"
-        ok "inyectadas en $NIRI_RULES"
-        niri msg action load-config-file "$HOME/.config/niri/config.kdl" &>/dev/null || true
+        warn "faltan las reglas flotantes — despliega Impr-niri (dueño de rules.kdl)"
     fi
 
     # ══════════════════════════════════════════════════════════════════════
