@@ -119,7 +119,7 @@ tooltip label {
 #custom-battery,
 #clock,
 #network,
-#bluetooth,
+#custom-bluetooth,
 #pulseaudio,
 #custom-power {
 	font-size: 16px;
@@ -258,12 +258,12 @@ tooltip label {
 }
 
 /* ── Bluetooth ──────────────────────────────────────────────────────── */
-#bluetooth {
+#custom-bluetooth {
 	color: @state-info;  /* gruvbox bright-aqua */
 	text-shadow: 0 0 8px rgba(131, 165, 152, 0.55);
 }
 
-#bluetooth.connected {
+#custom-bluetooth.connected {
 	color: @state-ok;  /* gruvbox bright-green */
 	text-shadow:
 		0 0 3px rgba(142, 192, 124, 0.90),
@@ -271,7 +271,7 @@ tooltip label {
 		0 0 20px rgba(142, 192, 124, 0.25);
 }
 
-#bluetooth.disabled {
+#custom-bluetooth.disabled {
 	color: @muted;
 	opacity: 0.5;
 	text-shadow: none;
@@ -524,9 +524,9 @@ tooltip label {
 #custom-battery.charging { text-shadow: 0 0 3px rgba(142, 192, 124, 1), 0 0 6px rgba(142, 192, 124, 0.80), 0 0 10px rgba(142, 192, 124, 0.50); }
 
 /* ── Bluetooth — azul en reposo, verde conectado, sin halo si apagado */
-#bluetooth { text-shadow: 0 0 3px rgba(131, 165, 152, 1), 0 0 6px rgba(131, 165, 152, 0.75), 0 0 9px rgba(131, 165, 152, 0.45); }
-#bluetooth.connected { text-shadow: 0 0 3px rgba(142, 192, 124, 1), 0 0 6px rgba(142, 192, 124, 0.80), 0 0 10px rgba(142, 192, 124, 0.50); }
-#bluetooth.disabled  { text-shadow: none; }
+#custom-bluetooth { text-shadow: 0 0 3px rgba(131, 165, 152, 1), 0 0 6px rgba(131, 165, 152, 0.75), 0 0 9px rgba(131, 165, 152, 0.45); }
+#custom-bluetooth.connected { text-shadow: 0 0 3px rgba(142, 192, 124, 1), 0 0 6px rgba(142, 192, 124, 0.80), 0 0 10px rgba(142, 192, 124, 0.50); }
+#custom-bluetooth.disabled  { text-shadow: none; }
 
 /* ── Red / volumen apagados — halo gris (@muted), no ámbar ────────── */
 #network.disconnected,

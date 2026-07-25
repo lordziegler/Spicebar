@@ -57,7 +57,8 @@ PKGS_MODULES=(
     github-cli             # custom/github  — racha de contribuciones (gh)
     curl                   # weather.sh
     swaync                 # custom/swaync  — swaync-client
-    blueman                # bluetooth      — blueman-manager
+    blueman                # custom/bluetooth — blueman-manager
+    bluez-utils            # custom/bluetooth — bluetoothctl (nombre del dispositivo)
     pwvucontrol            # pulseaudio     — clic izq. (mezclador PipeWire GTK4)
     wireplumber            # pulseaudio     — clic der. = mute (wpctl)
     wlogout                # custom/power
@@ -272,7 +273,7 @@ fi
 
 # Cada binario que invocan los scripts y los on-click.
 MISSING_BIN=()
-for c in waybar playerctl jq gh curl swaync-client blueman-manager \
+for c in waybar playerctl jq gh curl swaync-client blueman-manager bluetoothctl \
          pwvucontrol wpctl wlogout notify-send kitty inotifywait \
          powerprofilesctl fzf upower; do
     command -v "$c" &>/dev/null || MISSING_BIN+=("$c")

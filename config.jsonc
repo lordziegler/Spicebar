@@ -41,7 +41,7 @@
 			"custom/memory",
 			"custom/temp",
 			"network",
-			"bluetooth",
+			"custom/bluetooth",
 			"pulseaudio",
 			"custom/swaync",
 			"custom/battery"
@@ -163,14 +163,18 @@
 		"on-click": "~/.config/waybar/scripts/wifi-menu.sh"
 	},
 
-	"bluetooth": {
-		"format":           "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
-		"format-connected": "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span> {device_alias}",
-		"format-disabled":  "<span font='JetBrainsMonoNL Nerd Font Propo 16'></span>",
-		"tooltip-format": "{controller_alias} {controller_address}\n{num_connections} connected",
-		"tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
-		"tooltip-format-enumerate-connected": "  {device_alias}\t{device_address}",
-		"on-click": "blueman-manager"
+	// Custom en vez del módulo nativo "bluetooth": el nativo no permite alternar
+	// el nombre del dispositivo con el clic derecho (el formato es fijo por
+	// estado). bluetooth.sh reimplementa iconografía y tooltip nativos y añade
+	// un flag persistente en /tmp para el toggle.
+	"custom/bluetooth": {
+		"exec":           "~/.config/waybar/scripts/bluetooth.sh",
+		"return-type":    "json",
+		"interval":       5,
+		"signal":         15,
+		"tooltip":        true,
+		"on-click":       "blueman-manager",
+		"on-click-right": "~/.config/waybar/scripts/bluetooth.sh toggle"
 	},
 
 	"pulseaudio": {
