@@ -1,0 +1,20 @@
+# Ethernet (eno1) → /etc/systemd/network/20-wired.network
+#
+# iwd SOLO hace wifi. Sin NetworkManager, el cable necesita a alguien que le
+# haga DHCP: ese es systemd-networkd. Sin este archivo perderías el ethernet en
+# el momento en que enchufaras un cable.
+#
+# Que eno1 aparezca como 'NO-CARRIER / DOWN' sin cable es NORMAL, no un fallo.
+# (Fue una pista falsa que costó bastante tiempo en su día.)
+
+[Match]
+Name=eno1
+
+[Network]
+DHCP=yes
+
+[DHCPv4]
+# En Linux gana la ruta de métrica MÁS BAJA. Con 100 el cable queda por delante
+# del wifi (iwd le pone ~300), que es lo que quieres: si hay cable, manda el
+# cable, y el wifi queda de reserva.
+RouteMetric=100
