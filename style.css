@@ -67,8 +67,12 @@ tooltip label {
 	border-bottom: 2px solid transparent;
 	border-radius: 0px;
 	box-shadow: none;
-	padding: 0px;
-	min-width: 32px;
+	/* Waybar empaqueta el label al INICIO del botón: con `min-width` el
+	   planeta quedaba pegado a la izquierda y el filo/zona de hover ~10px
+	   desplazados a su derecha. Padding simétrico = mismo paso de 32px
+	   (celda de 12px + 2×10px) con el glifo centrado. */
+	padding: 0px 10px;
+	min-width: 0px;
 	/* Reposo = ámbar apagado de las notificaciones (@idle). El dorado
 	   brillante se reserva al workspace activo, así el foco se lee solo. */
 	color: @idle;
@@ -101,9 +105,10 @@ tooltip label {
 }
 
 #workspaces button:hover {
-	/* SOLO glow (halo), sin recuadro ni fondo — el mismo lenguaje que officium */
+	/* SOLO glow (halo), sin recuadro ni fondo — el mismo lenguaje que officium.
+	   Sin `border: none`: borraba el filo reservado (salto de 2px) y el
+	   subrayado del activo al pasar el ratón por encima. */
 	background: transparent;
-	border: none;
 	box-shadow: none;
 	color: @accent-gold;
 	text-shadow:
